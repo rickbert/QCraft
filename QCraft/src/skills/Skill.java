@@ -2,6 +2,7 @@ package skills;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 import main.QCraft;
 
@@ -10,15 +11,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import util.PlayerUtil;
+
 public abstract class Skill {
-	protected WeakReference<Player> player;
+	protected final UUID id;
 	protected final String skillName = this.getClass().getSimpleName();
 	protected int level;
 	protected int exp;
 	protected int expNext;
 	
-	public Skill(Player player, int level, int exp) {
-		this.player = new WeakReference<Player>(player);
+	public Skill(UUID id, int level, int exp) {
+		this.id = id;
 		this.level = level;
 		this.exp = exp;
 		this.expNext = (int) (Math.pow(1.005, this.level) * 100);
@@ -38,7 +41,7 @@ public abstract class Skill {
 
 	public void addExp(int amount) {
 		exp = exp + amount;
-		player.get().sendMessage("You have gained " + amount + " exp in " + skillName);
+		PlayerUtil.getPlayer(id).sendMessage("You have gained " + amount + " exp in " + skillName);
 		update();
 	}
 	
@@ -78,7 +81,7 @@ public abstract class Skill {
 			info();
 		} 
 		else {
-			player.get().sendMessage("Invalid level");
+			PlayerUtil.getPlayer(id).sendMessage("Invalid level");
 		}
 	}
 
@@ -87,16 +90,16 @@ public abstract class Skill {
 			level++;
 			exp = 0;
 			expNext = (int) (Math.pow(1.005, level) * 100);
-			player.get().sendMessage("You are now level " + level + " in " + skillName);
+			PlayerUtil.getPlayer(id).sendMessage("You are now level " + level + " in " + skillName);
 		}
 	}
 
 	public void message(int level, String message) {
 		if (this.level < level) {
-			player.get().sendMessage(ChatColor.RED + message);
+			PlayerUtil.getPlayer(id).sendMessage(ChatColor.RED + message);
 		}
 		else {
-			player.get().sendMessage(ChatColor.GREEN + message);
+			PlayerUtil.getPlayer(id).sendMessage(ChatColor.GREEN + message);
 		}
 	}
 }

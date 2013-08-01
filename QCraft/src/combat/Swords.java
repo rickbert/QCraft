@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import qplayer.Bleed;
 import skills.Skill;
 import skills.SkillType;
 import skills.Active.ActiveState;

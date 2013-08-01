@@ -1,12 +1,13 @@
 package qplayer;
 
 import factions.Faction;
-import industry.IndustryBuff;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
 
 import main.QCraft;
 
@@ -23,16 +24,16 @@ import skills.SkillType;
  */
 
 public class QPlayer {
-	private final WeakReference<Player> player;
+	private final UUID id;
 	private Money money = new Money(0);
 	private Faction faction = null;
 	private Power power = null;
 	private HashMap<SkillType, Skill> skills = new HashMap<SkillType, Skill>();
+	private HashSet<Bleed> bleeds = new HashSet<Bleed>();
 	private IndustryBuff industryBuff;
-	private PermissionAttachment permissions;
 
-	public QPlayer(Player player) {
-		this.player = new WeakReference<Player>(player);
+	public QPlayer(QCraft plugin, Player player) {
+		this.id = player.getUniqueId();
 	}
 	
 	public void setMoney(int amount) {
@@ -60,7 +61,7 @@ public class QPlayer {
 	}
 	
 	public void setPower(int power) {
-		this.power = new Power(player.get(), power);
+		this.power = new Power(id, power);
 	}
 	
 	public int getPower() {
@@ -85,13 +86,5 @@ public class QPlayer {
 	
 	public void removeIndustryBuff() {
 		industryBuff.removeBuff();
-	}
-	
-	public void setPermission(String name, boolean value) {
-		permissions.setPermission(name, value);
-	}
-	
-	public void removePermission(String name) {
-		permissions.unsetPermission(name);
 	}
 }

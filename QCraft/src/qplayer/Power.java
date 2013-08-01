@@ -3,18 +3,21 @@ package qplayer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 import javax.swing.Timer;
 
 import org.bukkit.entity.Player;
 
+import util.PlayerUtil;
+
 public class Power implements ActionListener {
 	private final Timer timer = new Timer(1200000, this);
-	private final WeakReference<Player> player;
+	private final UUID id;
 	private int power;
 	
-	public Power(Player player, int power) {
-		this.player = new WeakReference<Player>(player);
+	public Power(UUID id, int power) {
+		this.id = id;
 		this.power = power;
 	}
 
@@ -25,7 +28,7 @@ public class Power implements ActionListener {
 		}
 		else {
 			power++;
-			player.get().sendMessage("Your power is now at " + power);
+			PlayerUtil.getPlayer(id).sendMessage("Your power is now at " + power);
 		}		
 	}
 	
@@ -36,7 +39,7 @@ public class Power implements ActionListener {
 	public void lowerPower(int amount) {
 		if (power - amount >= -10) {
 			power = power - amount;
-			player.get().sendMessage("Your power is now at " + power);
+			PlayerUtil.getPlayer(id).sendMessage("Your power is now at " + power);
 		}
 		timer.start();
 	}

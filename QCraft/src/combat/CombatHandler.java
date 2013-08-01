@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+import qplayer.Bleed;
 import qplayer.QPlayer;
 import skills.SkillType;
 import custom.Tool;
