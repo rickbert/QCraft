@@ -2,43 +2,40 @@ package qplayer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
 import javax.swing.Timer;
 
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import util.PlayerUtil;
 import custom.Clock;
+import custom.Clock.Time;
 
 public class Bleed implements ActionListener {
-	private final UUID id;
+	private final UUID damagerId;
+	private final UUID targetId;
 	private final Timer timer = new Timer(1000, this);
 	private final Clock clock = new Clock();
 	public static boolean bleeding = false;
 
-	public Bleed(Player player) {
-		this.id = player.getUniqueId();
+	public Bleed(Player damager, Player target) {
+		this.damagerId = damager.getUniqueId();
+		this.targetId = target.getUniqueId();
 		timer.setInitialDelay(0);
 		timer.start();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (clock.getTime(Clock.SECONDS)) <= 4) {
-			
-		}
-		if (target.isValid() && ticks <= 5) {
-			if (event.getActionCommand().equals("start")) {
-				timer.setActionCommand("");
-				damager.sendMessage("Target is bleeding!");
-				if (target instanceof Player) {
-					((Player) target).sendMessage("You are bleeding!");
-				}
+		if (clock.getTime(Time.SECONDS) < 5) {
+			Player damager = PlayerUtil.getPlayer(damagerId);
+			Player target = PlayerUtil.getPlayer(targetId);
+			if (clock.getTime(Time.SECONDS) < 1) {
+				target.sendMessage("You are bleeding!");
 			}
 
 			double damage = 1;
@@ -50,21 +47,17 @@ public class Bleed implements ActionListener {
 				}
 			}
 
-			isBleeding = true;
+			bleeding = true;
 			target.damage(damage, damager);
-
-			ticks++;
-		} 
+		}
 		else {
 			timer.stop();
-			bleeds.get(damager).remove(target);
+			PlayerUtil.getQPlayer(targetId).removeBleed(damagerId);
 		}
-
 	}
 
-	private void reset() {
-		ticks = 0;
-		timer.setActionCommand("start");
+	public void reset() {
+		clock.reset();
 		timer.restart();
 	}
 }

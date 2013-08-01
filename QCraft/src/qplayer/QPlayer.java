@@ -2,11 +2,7 @@ package qplayer;
 
 import factions.Faction;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import main.QCraft;
@@ -20,7 +16,7 @@ import skills.Skill;
 import skills.SkillType;
 
 /*
- * Our class to store all the information QCraft will need (Money, Faction, Active, and Skill data)
+ * Our wrapper class which stores all our custom data associated with players
  */
 
 public class QPlayer {
@@ -29,11 +25,16 @@ public class QPlayer {
 	private Faction faction = null;
 	private Power power = null;
 	private HashMap<SkillType, Skill> skills = new HashMap<SkillType, Skill>();
-	private HashSet<Bleed> bleeds = new HashSet<Bleed>();
-	private IndustryBuff industryBuff;
+	private HashMap<UUID, Bleed> bleeds = new HashMap<UUID, Bleed>();
+	private final IndustryBuff industryBuff;
+	private final Resistance resistance;
+	private final PermissionAttachment permissions;
 
-	public QPlayer(QCraft plugin, Player player) {
+	public QPlayer(Player player) {
 		this.id = player.getUniqueId();
+		permissions = player.addAttachment(QCraft.get());
+		industryBuff = new IndustryBuff(id);
+		resistance = new Resistance(id);
 	}
 	
 	public void setMoney(int amount) {
@@ -69,7 +70,6 @@ public class QPlayer {
 	}
 	
 	public void setSkill(SkillType skill, int level, int exp) {
-		skills.put(skill, new Skill(skill, player.get(), level, exp));
 	}
 	
 	public void setSkills(HashMap<SkillType, Skill> skills) {
@@ -80,11 +80,39 @@ public class QPlayer {
 		return skills.get(skill);
 	}
 	
-	public void applyIndustryBuff(Block block, Tool tool) {
-		industryBuff.buff(block, tool);
+	public void applyBleed(Player damager, Player target) {
+		bleeds.put(damager.getUniqueId(), new Bleed(damager, target));
+	}
+	
+	public void removeBleed(UUID damagerId) {
+		bleeds.remove(damagerId);
+	}
+	
+	public void applyIndustryBuff(Block targetBlock, Tool tool) {
+		industryBuff.buff(targetBlock, tool);
 	}
 	
 	public void removeIndustryBuff() {
 		industryBuff.removeBuff();
+	}
+	
+	public void increaseResistance() {
+		resistance.buff();
+	}
+	
+	public void decreaseResistance() {
+		resistance.debuff();
+	}
+	
+	public void setPermission(String permission, boolean value) {
+		permissions.setPermission(permission, value);
+	}
+	
+	public void unsetPermission(String permission) {
+		permissions.unsetPermission(permission);
+	}
+	
+	public void save() {
+		
 	}
 }

@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import qplayer.PlayerParser;
 import qplayer.QPlayer;
 import skills.SkillsCommands;
+import util.ConfigLoader;
 
 public class QCraft extends JavaPlugin implements Listener {
 	private static QCraft instance;
@@ -54,10 +55,6 @@ public class QCraft extends JavaPlugin implements Listener {
 	
 	public void log(String message) {
 		this.getLogger().log(Level.INFO, message);
-	}
-	
-	public static QPlayer getQPlayer(Player player) {
-		return players.get(player);
 	}
 	
 	public static void cleanupPlayer(QPlayer player) {

@@ -1,0 +1,9 @@
+active:
+  name: "Tree Feller"
+exp:
+  default: 20
+blocks:
+  oak:
+  birch:
+  spruce:
+  jungle: 10

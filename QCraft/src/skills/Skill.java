@@ -1,76 +1,33 @@
 package skills;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.UUID;
 
-import main.QCraft;
-
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-
 import util.PlayerUtil;
 
 public abstract class Skill {
 	protected final UUID id;
 	protected final String skillName = this.getClass().getSimpleName();
+	protected Active active;
 	protected int level;
 	protected int exp;
 	protected int expNext;
-	
+
 	public Skill(UUID id, int level, int exp) {
 		this.id = id;
+		active = new Active(SkillType.getSkillType(skillName), id);
 		this.level = level;
 		this.exp = exp;
 		this.expNext = (int) (Math.pow(1.005, this.level) * 100);
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public int getExp() {
-		return exp;
+		loadConfig();
 	}
 
 	public String getName() {
 		return skillName;
 	}
 
-	public void addExp(int amount) {
-		exp = exp + amount;
-		PlayerUtil.getPlayer(id).sendMessage("You have gained " + amount + " exp in " + skillName);
-		update();
-	}
-	
-	public void primeActive() {
-		active.prime(10);
-	}
-
-	public void info() {
-		player.get().sendMessage(skillName);
-		player.get().sendMessage("Level: " + level);
-		player.get().sendMessage("EXP: " + exp + " / " + expNext);
-		long time = active.getTime();
-		String message = "Active Status: ";
-		switch (active.getState()) {
-		case READY:
-			player.get().sendMessage(ChatColor.GREEN + message + "Ready");
-			break;
-		case PRIMED:
-			player.get().sendMessage(ChatColor.RED + message + "Currently Primed. Time Remaining: " + time);
-			break;
-		case ACTIVE:
-			player.get().sendMessage(ChatColor.RED + message + "Currently Active. Time Remaining: " + time);
-			break;
-		case COOLDOWN:
-			player.get().sendMessage(ChatColor.RED + message + "On Cooldown. Time Remaining: " + time);
-			break;
-		default:
-			break;
-		}
+	public int getLevel() {
+		return level;
 	}
 
 	public void setLevel(int level) {
@@ -81,25 +38,73 @@ public abstract class Skill {
 			info();
 		} 
 		else {
-			PlayerUtil.getPlayer(id).sendMessage("Invalid level");
+			PlayerUtil.message(id, "Invalid level");
 		}
 	}
 
-	private void update() {
+	public int getExp() {
+		return exp;
+	}
+
+	protected void addExp(int amount) {
+		exp = exp + amount;
+		PlayerUtil.message(id, "You have gained " + amount + " exp in " + skillName);
+		update();
+	}
+
+	public void primeActive() {
+		active.prime(10);
+	}
+
+	public void info() {
+		PlayerUtil.message(id, skillName);
+		PlayerUtil.message(id, "Level: " + level);
+		PlayerUtil.message(id, "EXP: " + exp + " / " + expNext);
+		if (active != null) {
+			long time = active.getTime();
+			String message = "Active Status: ";
+			switch (active.getState()) {
+			case READY:
+				PlayerUtil.message(id, ChatColor.GREEN + message + "Ready");
+				break;
+			case PRIMED:
+				PlayerUtil.message(id, ChatColor.RED + message + "Currently Primed. Time Remaining: " + time);
+				break;
+			case ACTIVE:
+				PlayerUtil.message(id, ChatColor.RED + message + "Currently Active. Time Remaining: " + time);
+				break;
+			case COOLDOWN:
+				PlayerUtil.message(id, ChatColor.RED + message + "On Cooldown. Time Remaining: " + time);
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			message(0, "No active");
+		}
+	}
+
+
+
+	protected void update() {
 		if (exp >= expNext && level < 1000) {
 			level++;
 			exp = 0;
 			expNext = (int) (Math.pow(1.005, level) * 100);
-			PlayerUtil.getPlayer(id).sendMessage("You are now level " + level + " in " + skillName);
+			PlayerUtil.message(id, "You are now level " + level + " in " + skillName);
 		}
 	}
 
-	public void message(int level, String message) {
+	protected void message(int level, String message) {
 		if (this.level < level) {
-			PlayerUtil.getPlayer(id).sendMessage(ChatColor.RED + message);
+			PlayerUtil.message(id, ChatColor.RED + message);
 		}
 		else {
-			PlayerUtil.getPlayer(id).sendMessage(ChatColor.GREEN + message);
+			PlayerUtil.message(id, ChatColor.GREEN + message);
 		}
 	}
+
+	protected abstract void loadConfig();
+	protected abstract void save();
 }

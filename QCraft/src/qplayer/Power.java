@@ -2,12 +2,9 @@ package qplayer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 import javax.swing.Timer;
-
-import org.bukkit.entity.Player;
 
 import util.PlayerUtil;
 

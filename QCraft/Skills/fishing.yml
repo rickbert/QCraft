@@ -1,0 +1,7 @@
+active:
+  name: "Troll Pole"
+caught: 10
+items:
+  leather_boots:
+    exp: 1
+    chance: 10

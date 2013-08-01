@@ -17,7 +17,8 @@ public enum SkillType {
 	MINING (Mining.class),
 	SWORDS (Swords.class),
 	TOUGHNESS (Toughness.class),
-	WOODCUTTING (Woodcutting.class);
+	WOODCUTTING (Woodcutting.class),
+	SKILL (Skill.class);
 	
 	private final Class<?> skillClass;
 	
@@ -27,5 +28,15 @@ public enum SkillType {
 	
 	public Class<?> getClass(SkillType skillType) {
 		return skillClass;
+	}
+	
+	public static SkillType getSkillType(String skill) {
+		skill = skill.toLowerCase();
+		for (SkillType skillType : SkillType.values()) {
+			if (skillType.name().toLowerCase().equals(skill.toLowerCase())) {
+				return skillType;
+			}
+		}
+		return SkillType.SKILL;
 	}
 }

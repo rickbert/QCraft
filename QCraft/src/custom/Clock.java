@@ -1,9 +1,11 @@
 package custom;
 
+import java.util.concurrent.TimeUnit;
+
 public class Clock {
-	public static final int NANOSECONDS = 0;
-	public static final int MILLISECONDS = 1; 
-	public static final int SECONDS = 2;
+	public enum Time {
+		NANOSECONDS, MILLISECONDS, SECONDS;
+	}
 
 	private long start = System.nanoTime();
 
@@ -11,20 +13,24 @@ public class Clock {
 		return System.nanoTime() - start;
 	}
 
-	public double getTime(int unit) {
-		switch (unit) {
-		case 1:
+	public double getTime(Time time) {
+		switch (time) {
+		case MILLISECONDS:
 			return time() / 1000000.0;
-		case 2:
+		case SECONDS:
 			return time() / 1000000000.0;
-		case 0:
 		default:
-			return time() / 1;
+			return start;
 		}
 	}
 	
+	public void addTime(int duration) {
+		long addition = TimeUnit.NANOSECONDS.convert(duration, TimeUnit.SECONDS);
+		start = start + addition;
+	}
+	
 	public long getTicks() {
-		return Math.round(getTime(Clock.SECONDS) * 20);
+		return Math.round(getTime(Time.SECONDS) * 20);
 	}
 	
 	public void reset() {
