@@ -13,7 +13,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import skills.Skill;
+import skills.Active.ActiveState;
 
 public class Archaeology extends Skill {
 	private static HashMap<Material, Integer> diggable = new HashMap<Material, Integer>();
@@ -22,14 +24,13 @@ public class Archaeology extends Skill {
 
 	public Archaeology(UUID id, int level, int exp) {
 		super(id, level, exp);	
-		loadConfig();
 	}
 
 	@Override
 	public void info() {
 		super.info();
-		message(1, "Active: Instant digging for " + (int) (5 + 5 * level/1000) + " seconds with double discovery chance");
-		message(250, "Passive: Increased dig speed level " + (int) level/250 );
+		message(1, "Active: Instant digging for " + (int) (5 + 5 * level / 1000) + " seconds with double discovery chance");
+		message(250, "Passive: Increased dig speed level " + (int) (level / 250));
 		message(1, "Level 1 Passive: Chance of discovery in Dirt");
 		message(250, "Level 250 Passive: Chance of discovery in Sand");
 		message(500, "Level 500 Passive: Chance of discovery in Soul Sand");
@@ -56,15 +57,15 @@ public class Archaeology extends Skill {
 		Material type = block.getType();
 		if (drops.containsKey(type)) {
 			double roll = new Random().nextDouble();
+			if (active.getState().equals(ActiveState.ACTIVE)) {
+				roll = roll / 2.0;
+			}
 			Drop drop = drops.get(type);
 			if (drop.success(level, roll)) {
 				World world = block.getWorld();
 				Location location = block.getLocation();
 				world.dropItemNaturally(location, drop.getItem());
-				if (drop.getExp() > 0) {
-					addExp(drop.getExp());
-				}
-
+				addExp(drop.getExp());
 			}
 		}
 	}
@@ -91,14 +92,12 @@ public class Archaeology extends Skill {
 				finally {}
 
 				try {
-					ConfigurationSection dropSection = blocks.getConfigurationSection(block);
-					for (String drop : dropSection.getKeys(false)) {
-						int dropExp = Math.max(skillConfig.getInt("exp.drops"), dropSection.getInt("exp"));
-						Material material = Material.getMaterial(drop);
-						int level = Math.max(0, dropSection.getInt("level"));
-						double chance = Math.max(0, dropSection.getDouble("chance"));
-						drops.put(material, new Drop(material, level, chance, dropExp));
-					}
+					ConfigurationSection dropSection = blocks.getConfigurationSection(block + ".drop");
+					Material material = Material.getMaterial(dropSection.getString("item"));
+					int level = dropSection.getInt("level");
+					double chance = dropSection.getDouble("chance");
+					int dropExp = Math.max(skillConfig.getInt("exp.drops"), dropSection.getInt("exp"));
+					drops.put(material, new Drop(material, level, chance, dropExp));
 				}
 				finally {}
 			}

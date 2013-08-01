@@ -4,22 +4,27 @@ exp:
   default: 10
 blocks:
   soul_sand:
-    nether_warts:
-      level: 
-      chance:
+    drop:
+      item: nether_warts
+      level: 500
+      chance: 2
   dirt:
-    glowstone_dust:
-      level: 250
-      chance: 2.5
+    drop:
+      item: glowstone_dust
+      level: 1
+      chance: 4
   grass:
-    glowstone_dust:
-      level: 250
-      chance: 2.5
+    drop:
+      item: glowstone_dust
+      level: 1
+      chance: 4
   sand:
-    sulphur:
-      level:
-      chance:
+    drop:
+      item: sulphur
+      level: 250
+      chance: 3
   gravel:
-    diamond:
-      level:
-      chance:
+    drop:
+      item: diamond
+      level: 750
+      chance: 1

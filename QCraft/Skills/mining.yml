@@ -8,12 +8,35 @@ blocks:
   endstone:
   iron_ore:
   redstone_ore:
+    drop:
+      multiplier: 2
+      level: 500
+      chance: 30
   lapis_ore:
+    drop:
+      multiplier: 2
+      level: 500
+      chance: 30
   diamond_ore:
     bonus: 10
+    drop:
+      multiplier: 2
+      level: 500
+      chance: 30
+      exp: 10
   emerald_ore:
+    drop:
+      multiplier: 2
+      level: 500
+      chance: 30
+      exp: 10
   gold_ore:
   coal_ore:
+    drop:
+      multiplier: 2
+      level: 500
+      chance: 30
+      exp: 10
   obsidian:
     exp: 30
   

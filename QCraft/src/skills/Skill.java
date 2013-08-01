@@ -47,9 +47,11 @@ public abstract class Skill {
 	}
 
 	protected void addExp(int amount) {
-		exp = exp + amount;
-		PlayerUtil.message(id, "You have gained " + amount + " exp in " + skillName);
-		update();
+		if (amount > 0) {
+			exp = exp + amount;
+			PlayerUtil.message(id, "You have gained " + amount + " exp in " + skillName);
+			update();
+		}
 	}
 
 	public void primeActive() {
