@@ -1,0 +1,75 @@
+package main;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
+
+import skills.Skill;
+import skills.SkillType;
+import economy.Money;
+import factions.Faction;
+import factions.Power;
+
+/*
+ * Our class to store all the information QCraft will need (Money, Faction, Active, and Skill data)
+ */
+
+public class QPlayer {
+	private final WeakReference<Player> player;
+	private Money money;
+	private Faction faction = null;
+	private Power power;
+	private final HashMap<SkillType, Skill> skills = new HashMap<SkillType, Skill>();
+	private final PermissionAttachment permissions;
+	
+	public QPlayer(QCraft plugin, Player player) {
+		this.player = new WeakReference<Player>(player);
+		power = new Power(player, 0);
+		permissions = player.addAttachment(plugin);
+		for (SkillType skill : SkillType.values()) {
+			skills.put(skill, SkillType.newSkill(skill, player, 0, 0));
+		}
+	}
+	
+	public void setMoney(int amount) {
+		money = new Money(player.get(), amount);
+	}
+	
+	public Money getMoney() {
+		return money;
+	}
+	
+	public void setFaction(Faction faction) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
+	}
+	
+	public void setPower(int power) {
+		this.power = new Power(player.get(), power);
+	}
+	
+	public int getPower() {
+		return power.getPower();
+	}
+	
+	public void setSkill(SkillType skill, int level, int exp) {
+		skills.put(skill, SkillType.newSkill(skill, player.get(), level, exp));
+	}
+	
+	public Skill getSkill(SkillType skill) {
+		return skills.get(skill);
+	}
+	
+	public void setPermission(String name, boolean value) {
+		permissions.setPermission(name, value);
+	}
+	
+	public void removePermission(String name) {
+		permissions.unsetPermission(name);
+	}
+}

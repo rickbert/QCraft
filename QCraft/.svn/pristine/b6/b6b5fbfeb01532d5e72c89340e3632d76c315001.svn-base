@@ -1,0 +1,55 @@
+package main;
+
+import industry.IndustryHandler;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import permissions.Admin;
+import permissions.PermissionHandler;
+import combat.CombatHandler;
+import skills.SkillHandler;
+import economy.EconomyHandler;
+import factions.FactionHandler;
+
+public class PlayerData {
+	private static Connection connection;
+
+	public static void quit() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			player.kickPlayer("Server Shutting Down");
+		}
+		try {
+			connection.close();
+		} catch (Exception e) {
+			Logger.getLogger("Minecraft").info("Unable to close SQL Database!");
+		}
+	}
+	
+	private void load(Plugin plugin) {
+		new EconomyHandler(connection, plugin);
+		new SkillHandler(connection, plugin);
+		new FactionHandler(connection, plugin);
+		new IndustryHandler(plugin);
+		new CombatHandler(plugin);
+		new Admin(plugin);
+		new PermissionHandler(plugin);
+	}
+
+	public PlayerData(Plugin plugin) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost/qcraft";
+			connection = DriverManager.getConnection(url, "root", "paulisbest");
+			Logger.getLogger("Minecraft").info("SQL Database Connection Successful!");
+		} 
+		catch (Exception e) {
+			Logger.getLogger("Minecraft").info("SQL Database Connection Failed!");
+		}
+		load(plugin);	
+	}
+}

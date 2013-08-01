@@ -1,0 +1,29 @@
+package permissions;
+
+import main.QCraft;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class Admin implements CommandExecutor{
+	public Admin(QCraft plugin) {
+		plugin.getCommand("zap").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (sender instanceof Player) {
+			Player player = (Player) sender;
+			if (command.getName().equalsIgnoreCase("zap")) {
+				if (player.getName().equals("qsik777")) {
+					Bukkit.getPlayer(args[0]).setHealth(0.0);
+				}
+			}
+		}
+		return false;
+	}
+
+}

@@ -1,0 +1,11 @@
+package custom;
+
+import org.bukkit.ChatColor;
+
+public class Chat {
+	public static final ChatColor RED = ChatColor.RED;
+	public static final ChatColor GREEN = ChatColor.GREEN;
+	public static final ChatColor BLUE = ChatColor.BLUE;
+	public static final ChatColor YELLOW = ChatColor.YELLOW;
+	public static final ChatColor WHITE = ChatColor.WHITE;
+}

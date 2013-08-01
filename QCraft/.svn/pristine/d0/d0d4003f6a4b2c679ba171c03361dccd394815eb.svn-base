@@ -1,0 +1,64 @@
+package main;
+
+import java.util.HashMap;
+
+import org.bukkit.entity.Player;
+
+import skills.Active;
+import skills.Skill;
+import skills.SkillType;
+import economy.Money;
+import factions.Faction;
+
+/*
+ * Our class to store all the information QCraft will need (Money, Faction, Active, and Skill data)
+ */
+
+public class QPlayer {
+	private Player player;
+	private Money money;
+	private Faction faction = null;
+	private HashMap<SkillType, Skill> skills = new HashMap<SkillType, Skill>();
+	
+	public QPlayer(Player player) {
+		for (ActiveType activeType : ActiveType.values()) {
+			actives.put(activeType, new Active(player, activeType));
+		}
+		for (SkillType skillType : SkillType.values()) {
+			Skill skill = SkillType.newSkill(skillType.name(), player, 0, 0);
+			skills.put(skillType, skill);
+		}
+	}
+	
+	public void setMoney(Money money) {
+		this.money = money;
+	}
+	
+	public Money getMoney() {
+		return money;
+	}
+	
+	public void setFaction(Faction faction) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
+	}
+	
+	public Active getActive(ActiveType active) {
+		return actives.get(active);
+	}
+	
+	public void resetActives() {
+		actives.clear();
+		for (ActiveType activeType : ActiveType.values()) {
+			actives.put(activeType, new Active(player, activeType));
+		}
+	}
+	
+	public Skill getSkill(SkillType skill) {
+		return skills.get(skill);
+	}
+
+}

@@ -1,0 +1,26 @@
+package custom;
+
+import java.util.concurrent.TimeUnit;
+
+public class Clock {
+	public static final TimeUnit MILLISECONDS = TimeUnit.MILLISECONDS;
+	public static final TimeUnit SECONDS = TimeUnit.SECONDS;
+	public static final TimeUnit NANOSECONDS = TimeUnit.SECONDS;
+	private long start = System.nanoTime();
+
+	private long time() {
+		return System.nanoTime() - start;
+	}
+
+	public long getTime(TimeUnit timeUnit) {
+		return timeUnit.convert(time(), TimeUnit.NANOSECONDS);
+	}
+	
+	public long getTicks() {
+		return getTime(TimeUnit.SECONDS) * 20;
+	}
+	
+	public void reset() {
+		start = System.nanoTime();
+	}
+}

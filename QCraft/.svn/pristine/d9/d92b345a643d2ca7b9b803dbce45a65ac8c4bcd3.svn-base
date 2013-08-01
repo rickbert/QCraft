@@ -1,0 +1,48 @@
+package actives;
+
+import org.bukkit.entity.Player;
+
+public enum ActiveType {
+	ARCHAEOLOGY, FARMING, FISHING, MINING, SWORDS, TOUGHNESS, WOODCUTTING;
+
+	public static Active getActive(Player player, ActiveType active) {
+		switch (active) {
+		case ARCHAEOLOGY:
+			return new ArchaeologyActive(player);
+		case FARMING:
+			return new FarmingActive(player);
+		case FISHING:
+			return new FishingActive(player);
+		case MINING:
+			return new MiningActive(player);
+		case SWORDS:
+			return new SwordsActive(player);
+		case TOUGHNESS:
+			return new ToughnessActive(player);
+		case WOODCUTTING:
+			return new WoodcuttingActive(player);
+		}
+		return null;
+	}
+	
+	public static ActiveType getActiveType(String active) {
+		active = active.toUpperCase().split(" ")[0];
+		switch (active) {
+		case "ARCHAEOLOGY":
+			return ActiveType.ARCHAEOLOGY;
+		case "FARMING":
+			return ActiveType.FARMING;
+		case "FISHING":
+			return ActiveType.FISHING;
+		case "MINING":
+			return ActiveType.MINING;
+		case "SWORDS":
+			return ActiveType.SWORDS;
+		case "TOUGHNESS":
+			return ActiveType.TOUGHNESS;
+		case "WOODCUTTING":
+			return ActiveType.WOODCUTTING;
+		}
+		return null;
+	}
+}

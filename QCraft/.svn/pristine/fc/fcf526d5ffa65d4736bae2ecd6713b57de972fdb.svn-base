@@ -1,0 +1,25 @@
+package actives;
+
+import org.bukkit.entity.Player;
+
+import skills.SkillHandler;
+import skills.Skills;
+
+public class MiningActive extends Active {
+
+	public MiningActive(Player player) {
+		super(player);
+		player.sendMessage("Mining active primed");
+		timer.start();
+	}
+
+	@Override
+	public void activate(Object object) {
+		super.activate(object);
+		if (state.equals(ActiveState.ACTIVE)) {
+			int level = SkillHandler.getSkill(player, Skills.MINING).level();
+			time = 2 + 3 * level / 1000;
+			timer.restart();
+		}	
+	}
+}

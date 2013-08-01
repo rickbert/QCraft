@@ -1,0 +1,127 @@
+package actives;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
+import org.bukkit.entity.Player;
+
+public abstract class Active implements ActionListener {
+	protected final Player player;
+	protected final Timer timer;
+	protected int time;
+	protected ActiveState state;
+	protected final String activeName;
+
+	public enum ActiveState {
+		READY, PRIMED, ACTIVE, COOLDOWN;
+	}
+	
+	public Active(Player player) {
+		this.player = player;
+		timer = new Timer(1000, this);
+		time = 0;
+		state = ActiveState.READY;
+		String[] rawName = this.getClass().getSimpleName().split("Active");
+		activeName = rawName[0] + " " + "active ";
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (time == 0) {
+			timer.stop();
+			switch (state) {
+			case PRIMED:
+				player.sendMessage(activeName + "cancelled!");
+				state = ActiveState.READY;
+				break;
+			case ACTIVE:
+				player.sendMessage(activeName + "ended!");
+				state = ActiveState.COOLDOWN;
+				setCooldownTime();
+				timer.restart();
+				break;
+			case COOLDOWN:
+				player.sendMessage(activeName + "ready!");
+				state = ActiveState.READY;
+				timer.stop();
+				ActiveManager.remove(player, ActiveType.getActiveType(activeName));
+				break;
+			default:
+				break;
+			}
+		}
+		time--;
+	}
+	
+	protected void setCooldownTime() {
+		time = 300;
+	}
+	
+	protected void prime() {
+		if (state.equals(ActiveState.READY)) {
+			timer.restart();
+			time = 10;
+			state = ActiveState.PRIMED;
+			player.sendMessage(activeName + "primed!");
+		}
+		else {
+			info();
+		}
+	}
+
+	protected void activate(Object object) {
+		if (state.equals(ActiveState.PRIMED)) {
+			timer.stop();
+			state = ActiveState.ACTIVE;
+			player.sendMessage(activeName + "activated!");
+		}
+		else {
+			info();
+		}
+	}
+	
+	protected int getTime() {
+		return time;
+	}
+	
+	protected void info() {
+		switch (state) {
+		case READY:
+			player.sendMessage(activeName + "ready!");
+			break;
+		case PRIMED:
+			player.sendMessage(activeName + "currently primed");
+			break;
+		case ACTIVE:
+			player.sendMessage(activeName + "currently active");
+			break;
+		case COOLDOWN:
+			player.sendMessage(activeName + "on cooldown");
+			break;
+		}
+	}
+
+	protected boolean isOn() {
+		return state.equals(ActiveState.ACTIVE);
+	}
+	
+	protected void reset() {
+		timer.stop();
+		time = 0;
+		state = ActiveState.READY;
+	}
+	
+	protected void message() {
+		player.sendMessage("Active primed");
+	}
+	
+	protected void stop() {
+		timer.stop();
+	}
+	
+	protected ActiveState getState() {
+		return state;
+	}
+}

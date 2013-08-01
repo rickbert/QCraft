@@ -1,0 +1,40 @@
+package actives;
+
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import skills.SkillHandler;
+import skills.Skills;
+
+public class ToughnessActive extends Active {
+	private static final PotionEffectType NAUSEA = PotionEffectType.CONFUSION;
+
+	public ToughnessActive(Player player) {
+		super(player);
+	}
+	
+	@Override
+	public void activate(Object object) {
+		if (state.equals(ActiveState.PRIMED)) {
+			super.activate(null);
+			int level = SkillHandler.getSkill(player, Skills.TOUGHNESS).level();
+			LivingEntity target = (LivingEntity) object;
+			if (level < 250) {
+				target.setVelocity(player.getLocation().getDirection());
+			}
+			else if (level < 500) {
+				target.setVelocity(player.getLocation().getDirection().multiply(2));
+			}
+			else if (level < 750) {
+				target.addPotionEffect(new PotionEffect(NAUSEA, 240, 2));
+			}
+			else {
+				target.addPotionEffect(new PotionEffect(NAUSEA, 240, 3));
+			}
+			time = 0;
+			timer.restart();
+		}
+	}
+}

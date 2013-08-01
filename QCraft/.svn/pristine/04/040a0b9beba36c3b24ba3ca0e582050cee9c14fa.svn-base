@@ -1,0 +1,88 @@
+package factions;
+
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import custom.Chat;
+import economy.Money;
+import main.Plugin;
+
+public class FactionCommands implements CommandExecutor {
+	private final Plugin plugin;
+	
+	public FactionCommands(Plugin plugin) {
+		this.plugin = plugin;
+		plugin.getCommand("qfactions").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (sender instanceof Player) {
+			if (command.getName().equalsIgnoreCase("qfactions")) {
+				Player player = (Player) sender;
+
+				switch (args[0].toLowerCase()) {
+				case "faction":
+					Faction faction = FactionHandler.getFaction(player);
+					player.sendMessage("Members:");
+					String online = Chat.GREEN + "Online: ";
+					String offline = Chat.RED + "Offline: ";
+					for (String member : faction.getMembers()) {
+						if (Bukkit.getPlayer(member).isOnline()) {
+							online = online + member + ", ";
+						}
+						else {
+							offline = offline + member + ", ";
+						}
+						online = online.substring(0, online.length() - 2);
+						offline = offline.substring(0, offline.length() - 2);
+					}
+					player.sendMessage(online);
+					player.sendMessage(offline);
+					return true;
+				case "bank":
+					if (FactionHandler.inFaction(player)) {
+						Faction faction2 = FactionHandler.getFaction(player);
+						if (args.length == 2) {
+							int amount = Integer.parseInt(args[1]);
+							int balance = faction2.getBalance();
+							Money money = Money.getMoney(player);
+							if (money.withdraw(amount)) {
+								faction2.setBalance(balance + amount);
+								player.sendMessage("You have deposited " + amount + " in the faction bank");
+							}
+							else {
+								player.sendMessage("You do not have enough money");
+							}							
+						}
+						player.sendMessage("Faction balance: " + faction2.getBalance());
+					}
+					return true;
+				case "make":
+					if (!(FactionHandler.inFaction(player))) {
+						FactionHandler.addFaction(new Faction(args[1]));
+					}
+					return true;
+				case "claim":
+					Chunk chunk = player.getLocation().getChunk();
+					Faction playerFaction = FactionHandler.getFaction(player);
+					Faction landFaction = FactionHandler.getFaction(chunk);
+					if (landFaction.name() == null) {
+						if (playerFaction.getPower() > playerFaction.getLand().size()) {
+							
+						}
+					}
+					return true;				
+				}
+			}
+		}
+		return false;
+	}
+
+}

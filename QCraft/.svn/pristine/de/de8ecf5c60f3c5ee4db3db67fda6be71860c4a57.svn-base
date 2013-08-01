@@ -1,0 +1,66 @@
+package actives;
+
+import java.util.HashMap;
+import org.bukkit.entity.Player;
+
+import actives.Active.ActiveState;
+
+public class ActiveManager {
+	private static HashMap<Player, HashMap<ActiveType, Active>> actives = new HashMap<Player, HashMap<ActiveType, Active>>(); 
+	
+	public static void prime(Player player, ActiveType activeType) {
+		if (actives.containsKey(player) == false) {
+			actives.put(player, new HashMap<ActiveType, Active>());
+		}
+		if (actives.get(player).containsKey(activeType) == false) {
+			actives.get(player).put(activeType, ActiveType.getActive(player, activeType));
+		}
+		actives.get(player).get(activeType).prime();
+	}
+
+	public static void activate(Player player, ActiveType activeType, Object object) {
+		if (actives.containsKey(player)) {
+			if (actives.get(player).containsKey(activeType)) {
+				if (actives.get(player).get(activeType).getState().equals(ActiveState.PRIMED)) {
+					actives.get(player).get(activeType).activate(object);
+				}
+			}
+		}
+	}
+
+	public static void remove(Player player) {
+		if (actives.containsKey(player)) {
+			for (Active active : actives.get(player).values()) {
+				active.stop();
+			}
+			actives.remove(player);
+		}
+	}
+
+	public static void remove(Player player, ActiveType active) {
+		if (actives.containsKey(player)) {
+			if (actives.get(player).containsKey(active)) {
+				actives.get(player).get(active).stop();
+				actives.get(player).remove(active);
+			}
+		}
+	}
+	
+	public static ActiveState getState(Player player, ActiveType active) {
+		if (actives.containsKey(player)) {
+			if (actives.get(player).containsKey(active)) {
+				return actives.get(player).get(active).getState();
+			}
+		}
+		return ActiveState.READY;
+	}
+	
+	public static int getTime(Player player, ActiveType active) {
+		if (actives.containsKey(player)) {
+			if (actives.get(player).containsKey(active)) {
+				return actives.get(player).get(active).getTime();
+			}
+		}
+		return 0;
+	}
+}

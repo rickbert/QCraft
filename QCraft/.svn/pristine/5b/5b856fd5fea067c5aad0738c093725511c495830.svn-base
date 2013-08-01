@@ -1,0 +1,212 @@
+package industry;
+
+import java.util.Random;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.material.SpawnEgg;
+
+import skills.SkillHandler;
+import skills.SkillType;
+import actives.Active;
+import actives.Active.ActiveState;
+import actives.Active.ActiveType;
+import custom.Tool;
+import main.QCraft;
+
+public class IndustryHandler implements Listener {
+
+	public IndustryHandler(QCraft plugin) {
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void industryBuff(BlockDamageEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		switch (Tool.getTool(player.getItemInHand())) {
+		case AXE:
+			if (Woodcutting.isLoggable(block)) {
+				Woodcutting woodcutting = (Woodcutting) SkillHandler.getSkill(player, SkillType.WOODCUTTING);
+				woodcutting.active(block);
+				Industry.applyBuff(player, block);
+			}
+			break;
+		case PICKAXE:
+			if (Mining.isMinable(block)) {
+				Mining mining = (Mining) SkillHandler.getSkill(player, SkillType.MINING);
+				mining.active(block);
+				Industry.applyBuff(player, block);
+			}
+			break;
+		case SPADE:
+			if (Archaeology.isDiggable(block)) {
+				Archaeology archaeology = (Archaeology) SkillHandler.getSkill(player, SkillType.MINING);
+				archaeology.active(block);
+				Industry.applyBuff(player, block);
+			}
+			break;
+		case HOE:
+			if (Farming.isCrop(block)) {
+				Industry.applyBuff(player, block);
+			}			
+			break;
+		default:
+			break;
+		}
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void refreshIndustryBuff(PlayerAnimationEvent event) {
+		Player player = event.getPlayer();
+		Block block = player.getTargetBlock(null, 5);
+		switch (Tool.getTool(player.getItemInHand())) {
+		case AXE:
+		case PICKAXE:
+		case SPADE:
+		case HOE:
+			Industry.refreshBuff(player, block);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void blockBreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		if (Farming.isCrop(block)) {
+			Farming farming = (Farming) SkillHandler.getSkill(player, SkillType.FARMING);
+			farming.blockBreak(block);
+		}
+		switch (Tool.getTool(player.getItemInHand())) {
+		case AXE:
+			if (Woodcutting.isLoggable(block)) {
+				Woodcutting woodcutting = (Woodcutting) SkillHandler.getSkill(player, SkillType.WOODCUTTING);
+				woodcutting.blockBreak(block);
+			}
+			break;
+		case PICKAXE:
+			if (Mining.isMinable(block)) {
+				Mining mining = (Mining) SkillHandler.getSkill(player, SkillType.MINING);
+				mining.blockBreak(block);
+			}
+			break;
+		case SPADE:
+			if (Archaeology.isDiggable(block)) {
+				Archaeology archaeology = (Archaeology) SkillHandler.getSkill(player, SkillType.MINING);
+				archaeology.blockBreak(block);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void industryActives(PlayerInteractEvent event) {
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			Player player = event.getPlayer();
+			Block block = event.getClickedBlock();
+			Farming farming = (Farming) SkillHandler.getSkill(player, SkillType.FARMING);
+			farming.active(block);
+			switch (Tool.getTool(player.getItemInHand())) {
+			case AXE:
+				if (block.getType().equals(Material.LOG)) {
+					if (Active.getState(player, ActiveType.WOODCUTTING).equals(ActiveState.READY)) {
+						Woodcutting woodcutting = (Woodcutting) SkillHandler.getSkill(player, SkillType.WOODCUTTING);
+						if (woodcutting.treeFeller(block)) {
+							player.sendMessage("Tree felled!");
+							Active.prime(player, ActiveType.WOODCUTTING, 0);
+							Active.activate(player, ActiveType.WOODCUTTING, 0, 300);
+						}
+					}
+					else {
+						Active.prime(player, ActiveType.WOODCUTTING, 0);						
+					}
+				}
+				break;
+			case PICKAXE:
+				if (Mining.isMinable(block)) {
+					Active.prime(player, ActiveType.MINING, 10);
+				}
+				break;
+			case SPADE:
+				if (Archaeology.isDiggable(block)) {
+					Active.prime(player, ActiveType.ARCHAEOLOGY, 10);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void farmingGrowthPassive(BlockPlaceEvent event) {
+		Farming farming = (Farming) SkillHandler.getSkill(event.getPlayer(), SkillType.FARMING);
+		farming.blockPlace(event.getBlock());
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void farmingHungerPassive(PlayerItemConsumeEvent event) {
+		Farming farming = (Farming) SkillHandler.getSkill(event.getPlayer(), SkillType.FARMING);
+		farming.itemConsume(event.getItem());
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void farmingBlockConversion(PlayerInteractEvent event) {
+		Farming farming = (Farming) SkillHandler.getSkill(event.getPlayer(), SkillType.FARMING);
+		farming.active(event.getClickedBlock());
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void farmingCowConversion(PlayerInteractEntityEvent event) {
+		Farming farming = (Farming) SkillHandler.getSkill(event.getPlayer(), SkillType.FARMING);
+		farming.active(event.getRightClicked());
+	}
+
+	@EventHandler (ignoreCancelled = true)
+	private void fishing(PlayerFishEvent event) {
+		Fishing fishing = (Fishing) SkillHandler.getSkill(event.getPlayer(), SkillType.FISHING);
+		if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH)) {
+			fishing.addExp(100);
+		}
+		if (event.getCaught() instanceof LivingEntity) {
+			Player player = event.getPlayer();
+			LivingEntity caught = (LivingEntity) event.getCaught();
+			if (caught instanceof Player && fishing.level() >= 750) {
+				if (Active.getState(player, ActiveType.FISHING).equals(ActiveState.PRIMED)) {
+					fishing.reel((Player) caught);
+					Active.activate(player, ActiveType.FISHING, 0, 10);
+				}
+			}
+			else {
+				EntityType eggType = caught.getType();
+				if (eggType.isSpawnable()) {
+					if (new Random().nextDouble() <= fishing.level() / 10000.0) {
+						World world = player.getWorld();
+						world.dropItem(player.getLocation(), new SpawnEgg(eggType).toItemStack());
+					}
+				}
+			}
+		}
+	}
+}

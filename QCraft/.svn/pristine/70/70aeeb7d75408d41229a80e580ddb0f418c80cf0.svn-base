@@ -1,0 +1,23 @@
+package actives;
+
+import org.bukkit.entity.Player;
+
+import skills.SkillHandler;
+import skills.Skills;
+
+public class ArchaeologyActive extends Active {
+
+	public ArchaeologyActive(Player player) {
+		super(player);
+	}
+
+	@Override
+	public void activate(Object object) {
+		if (state.equals(ActiveState.PRIMED)) {
+			super.activate(object);
+			int level = SkillHandler.getSkill(player, Skills.ARCHAEOLOGY).level();
+			time = 5 + 5 * level / 1000;
+			timer.restart();
+		}
+	}	
+}

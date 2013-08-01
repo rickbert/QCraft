@@ -1,0 +1,59 @@
+package economy;
+
+import java.util.HashMap;
+
+import org.bukkit.entity.Player;
+
+public class Money {
+	private Player player;
+	private int balance;
+	private static HashMap<Player, Money> players = new HashMap<Player, Money>();
+
+	public Money(Player player, int balance) {
+		this.player = player;
+		this.balance = balance;
+		players.put(player, this);
+	}
+
+	public int balance() {
+		return balance;
+	}
+
+	public void checkBalance() {
+		player.sendMessage("You have $" + balance);
+	}
+
+	public boolean deposit(int amount) {
+		if (amount > 0) {
+			balance = balance + amount;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean withdraw(int amount) {
+		if (balance - amount >= 0) {
+			balance = balance - amount;
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Balance: " + balance;
+	}
+	
+	public static Money getMoney(Player player) {
+		if (players.containsKey(player)) {
+			return players.get(player);
+		}
+		return new Money(player, 0);
+	}
+	
+	public static void removeMoney(Player player) {
+		if (players.containsKey(player)) {
+			players.remove(player);
+		}
+	}
+}

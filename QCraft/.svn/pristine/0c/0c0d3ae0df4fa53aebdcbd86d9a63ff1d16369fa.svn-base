@@ -1,0 +1,195 @@
+package combat;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import javax.swing.Timer;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import custom.Clock;
+
+public class Resistance2 implements ActionListener {
+	private static final PotionEffectType RESISTANCE = PotionEffectType.DAMAGE_RESISTANCE;
+	private final LivingEntity target;
+	private final Timer buffTimer, debuffTimer, eventTimer;
+	private Timer appleTimer;
+	private Clock buffClock, debuffClock, appleClock;
+	private int buffStacks, debuffStacks, duration, rank, appleDuration;
+	private static final HashMap<LivingEntity, Resistance2> resistances = new HashMap<LivingEntity, Resistance2>();
+
+	public Resistance2(LivingEntity target) {
+		this.target = target;
+		eventTimer = new Timer(0, null);
+
+		buffStacks = 0;
+		buffTimer = new Timer(10000, this);
+		buffTimer.setRepeats(false);
+		buffTimer.setActionCommand("buff");
+		buffClock = new Clock();
+
+		debuffStacks = 0;
+		debuffTimer = new Timer(10000, this);
+		debuffTimer.setRepeats(false);
+		debuffTimer.setActionCommand("debuff");	
+		debuffClock = new Clock();
+
+		appleClock = new Clock();
+
+		resistances.put(target, this); //Needed since in Buff/Debuff overloads?
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+
+		for(PotionEffect effect : target.getActivePotionEffects()) {
+			if (effect.getType().equals(RESISTANCE) && effect.getDuration() > 200 && effect.getAmplifier() == 0) { //User has god apple
+				if(effect.getDuration() > (duration - appleClock.getTicks() + 20)){ //God Apple duration is over a second longer then what we think (lag or eats a new one)
+					apple(effect);
+				}
+			}
+		}
+
+		if(event.getActionCommand().equals("buff")){ //buff falls off
+			buffStacks = 0;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("Buff Fell Off");
+			}
+		}
+
+		if(event.getActionCommand().equals("debuff")){ //debuff falls off
+			debuffStacks = 0;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("Debuff Fell Off");
+			}
+		}
+
+		//calculate rank
+		rank = debuffStacks * -1 + buffStacks;
+		if (target instanceof Player) {
+			Player player = (Player) target;
+			player.sendMessage("New Rank Found of " + rank);
+		}
+		
+		if (appleDuration - appleClock.getTicks() > 0){     // apple is on
+			rank++;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("Apple is On");
+			}
+		}
+
+		if (rank == 0){  //no output if rank = 0;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("No effect");
+			}
+			if(!buffTimer.isRunning() && !debuffTimer.isRunning() && appleDuration - appleClock.getTicks() < 0){// No buff, debuff or god apple
+				
+				if (target instanceof Player) {
+					Player player = (Player) target;
+					player.sendMessage("Removed from hashmap");
+				}
+				resistances.remove(this);
+			}
+			return;
+		}
+
+		if (rank > 0){ //Subtract 1 if positive (rank 1 is amplitude 0), do nothing if negative (rank -1 is amplitude -1)
+			rank--;
+		}
+		if (rank < -4){
+			rank = -4;
+		}
+
+		//Calculate Duration Hard part, most likely going to be 200, sometimes shorter (arrow, then punch, then arrow falls off), sometimes longer (combat ends god apple still on)
+		//Try to predict time it event will fire again
+
+		//uses minimum from one of the three
+		int temp1 = (int) (appleDuration - appleClock.getTicks());
+		int temp2 = (int) (200 - buffClock.getTicks());
+		int temp3 = (int) (200 - debuffClock.getTicks());
+		if(temp1 < 0 || !appleTimer.isRunning()){
+			temp1 = 7000;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("No Apple");
+			}
+		}
+		if (temp2 < 0  || !buffTimer.isRunning()){
+			temp2 = 7000;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("No Buff");
+			}
+		}
+		if (temp3 < 0 || !debuffTimer.isRunning()){
+			temp3 = 7000;
+			if (target instanceof Player) {
+				Player player = (Player) target;
+				player.sendMessage("No Debuff");
+			}
+		}
+		duration = Math.min(Math.min(temp1, temp2),temp3);
+		//Apply Potion Effect
+		target.addPotionEffect(new PotionEffect(RESISTANCE, duration, rank));
+		if (target instanceof Player) {
+			Player player = (Player) target;
+			player.sendMessage("Amplitude: " + rank + " and duration " + duration / 20 + " seconds.");
+		}
+
+	}
+
+	public void debuff() { //arrow hit effect
+		if (target instanceof Player) {
+			Player player = (Player) target;
+			player.sendMessage("Debuff");
+		}
+		debuffStacks++;
+		debuffClock.reset();
+		debuffTimer.restart();//Can i get away with always and only using restart? (non-repeatable)
+		actionPerformed(null);
+		
+	}
+
+	public void buff() { //Toughness effect
+		if (target instanceof Player) {
+			Player player = (Player) target;
+			player.sendMessage("Buff");
+		}
+		buffStacks = 1;
+		buffClock.reset();
+		buffTimer.restart();
+		actionPerformed(null);
+		
+	}
+
+	public void apple(PotionEffect effect) { //Newly Found god apple note: appleDuration - appleClock.getTicks() => Ticks left
+		if (target instanceof Player) {
+			Player player = (Player) target;
+			player.sendMessage("New apple of " + (appleDuration - appleClock.getTicks() / 20) + " seconds found");
+		}
+		appleDuration = effect.getDuration();
+		appleClock.reset();                  // if (appleDuration - appleClock.getTicks() > 0) apple is on
+		appleTimer = new Timer(appleDuration * 50, this);//Does this work? ( want to fire new event when apple expires)
+		appleTimer.setRepeats(false);
+		appleTimer.setActionCommand("apple");	
+	}
+
+	public static void debuff(LivingEntity target) {
+		if (resistances.containsKey(target) == false) {
+			resistances.put(target, new Resistance2(target));
+		}		
+		resistances.get(target).debuff();
+	}
+
+	public static void buff(LivingEntity target) {
+		if (resistances.containsKey(target) == false) {
+			resistances.put(target, new Resistance2(target));
+		}
+		resistances.get(target).buff();
+	}
+}

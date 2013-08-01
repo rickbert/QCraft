@@ -1,0 +1,106 @@
+package factions;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import main.Plugin;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+public class FactionHandler implements CommandExecutor {
+	private static HashMap<String, Faction> factions;
+	private static HashMap<Player, Faction> members;
+	private static HashMap<Land, Faction> land;
+	private final Connection connection;
+
+	public FactionHandler(Connection connection, Plugin plugin) {
+		this.connection = connection;
+		new FactionListener(plugin);
+		factions = new HashMap<String, Faction>();
+		members = new HashMap<Player, Faction>();
+		land = new HashMap<Land, Faction>();
+		String factionQuery = "SELECT * FROM factions";
+		try {
+			ResultSet factionData = connection.prepareStatement(factionQuery).executeQuery();
+			while (factionData.next()) {
+				Faction faction = new Faction(factionData.getString("faction"));
+				String[] homeInfo = factionData.getString("home").split(",");
+				Home home = new Home(faction, homeInfo);
+				faction.setHome(home);
+				
+				String name = "'" + faction.name() + "'";
+				
+				String memberQuery = "SELECT * FROM faction members WHERE faction = " + name;
+				ResultSet memberData = connection.prepareStatement(memberQuery).executeQuery();
+				while (memberData.next()) {
+					Player player = Bukkit.getPlayer(memberData.getString("username"));
+					int status = memberData.getInt("status");
+					faction.addMember(player, status);					
+				}
+				
+				String landQuery = "SELECT * FROM faction land WHERE faction = " + name;
+				ResultSet landData = connection.prepareStatement(landQuery).executeQuery();
+				while (landData.next()) {
+					int world = landData.getInt("world");
+					int x = landData.getInt("x");
+					int z = landData.getInt("z");
+					Land land = new Land(world, x, z);
+					faction.addLand(land);
+				}
+				factions.put(faction.name(), faction);
+			}
+		} 
+		catch (Exception e) {
+
+		}
+
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public static LinkedList<String> getFactions() {
+		LinkedList<String> names = new LinkedList<String>();
+		Iterator<Faction> iterator = factions.values().iterator();
+		while(iterator.hasNext()) {
+			names.add(iterator.next().name());
+		}
+		return names;
+	}
+	
+	public static Faction getFaction(Player player) {
+		if (members.containsKey(player)) {
+			return members.get(player);			
+		}
+		return null;		
+	}
+	
+	public static Faction getFaction(Chunk chunk) {
+		for(Land plot : land.keySet()) {
+			if (plot.check(chunk)) {
+				return land.get(plot);
+			}
+		}
+		return null;
+	}
+	
+	public static boolean inFaction(Player player) {
+		return members.keySet().contains(player);		
+	}
+	
+}

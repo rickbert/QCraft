@@ -1,0 +1,87 @@
+package combat;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+
+import skills.SkillHandler;
+import skills.SkillType;
+import actives.Active;
+import actives.Active.ActiveType;
+import custom.Tool;
+import main.QCraft;
+
+public class CombatHandler implements Listener {
+
+	public CombatHandler(QCraft plugin) {
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
+	
+	@EventHandler (ignoreCancelled = true)
+	private void combat(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof LivingEntity) {
+			if (Bleed.isBleeding) {
+				Bleed.isBleeding = false;
+			}
+			else {
+				if (event.getDamager() instanceof Player) {
+					if (event.getEntity() instanceof Player) {
+						Player player = (Player) event.getEntity();
+						Resistance.buff(player.getName());
+					}
+					Player damager = (Player) event.getDamager();
+					String weapon = damager.getItemInHand().getType().name();
+					if (weapon.contains("_SWORD")) {
+						Swords swords = (Swords) SkillHandler.getSkill(damager, SkillType.SWORDS);
+						swords.combat(event);
+					}
+					else {
+						Toughness toughness = (Toughness) SkillHandler.getSkill(damager, SkillType.TOUGHNESS);
+						toughness.combat(event);
+					}
+				}
+				if (event.getDamager() instanceof Arrow) {
+					Arrow arrow = (Arrow) event.getDamager();
+					if (arrow.getShooter() instanceof Player) {
+						Player damager = (Player) arrow.getShooter();
+						Archery archery = (Archery) SkillHandler.getSkill(damager, SkillType.ARCHERY);
+						archery.combat(event);
+					}
+				}
+			}
+		}		
+	}
+	
+	@EventHandler (ignoreCancelled = true)
+	private void toughness(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			Toughness toughness = (Toughness) SkillHandler.getSkill(player, SkillType.TOUGHNESS);
+			toughness.resistDamage(event);
+		}
+	}
+	
+	@EventHandler (ignoreCancelled = true)
+	private void combatActives(PlayerInteractEntityEvent event) {
+		if (event.getRightClicked() instanceof Player) {
+			Player player = event.getPlayer();
+			switch (Tool.getTool(player.getItemInHand())) {
+			case SWORD:
+				Active.prime(player, ActiveType.SWORDS, 10);
+				break;
+			case FISHING_ROD:
+				Active.prime(player, ActiveType.FISHING, 10);
+			case NONE:
+			default:
+				Active.prime(player, ActiveType.TOUGHNESS, 10);
+				break;
+			}
+		}
+	}
+}

@@ -1,0 +1,73 @@
+package skills;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+public abstract class Skill {
+	protected final Player player;
+	protected final String name = this.getClass().getSimpleName();
+	protected int level;
+	protected int exp;
+	protected int expNext;
+
+	public Skill(Player player, int level, int exp) {
+		this.player = player;
+		this.level = level;
+		this.exp = exp;
+		expNext = (int) (Math.pow(1.005, this.level) * 100);
+	}
+	
+	public int level() {
+		return level;
+	}
+	
+	public int exp() {
+		return exp;
+	}
+	
+	public String name() {
+		return name;
+	}
+
+	public void addExp(int amount) {
+		exp = exp + amount;
+		player.sendMessage("You have gained " + amount + " exp in " + name);
+		update();
+	}
+
+	public void info() {
+		player.sendMessage(name);
+		player.sendMessage("Level: " + level);
+		player.sendMessage("EXP: " + exp + " / " + expNext);
+	}
+
+	public void setLevel(int level) {
+		if (level <= 1000 && level >= 0) {
+			this.level = level;
+			exp = 0;
+			expNext = (int) (Math.pow(1.005, level) * 100);
+			info();
+		} 
+		else {
+			player.sendMessage("Invalid level");
+		}
+	}
+
+	private void update() {
+		if (exp >= expNext && level < 1000) {
+			level++;
+			exp = 0;
+			expNext = (int) (Math.pow(1.005, level) * 100);
+			player.sendMessage("You are now level " + level + " in " + name);
+		}
+	}
+	
+	public void message(int level, String message) {
+		if (this.level < level) {
+			player.sendMessage(ChatColor.RED + message);
+		}
+		else {
+			player.sendMessage(ChatColor.GREEN + message);
+		}
+	}
+}

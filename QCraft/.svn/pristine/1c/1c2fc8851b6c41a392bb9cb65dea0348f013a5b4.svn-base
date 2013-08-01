@@ -1,0 +1,94 @@
+package actives;
+
+import java.util.LinkedList;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import actives.Active.ActiveState;
+import skills.Skill;
+import skills.Skills;
+import skills.SkillHandler;
+
+public class WoodcuttingActive extends Active {
+	private LinkedList<Block> tree;
+
+	public WoodcuttingActive(Player player) {
+		super(player);
+		tree = new LinkedList<Block>();
+	}
+	
+	@Override
+	public void prime() {
+		if (state.equals(ActiveState.READY)) {
+			activate(player.getTargetBlock(null, 5));
+		}
+		else {
+			info();
+		}
+	}
+
+	@Override
+	public void activate(Object object) {
+		if (object instanceof Block) {
+			Block block = (Block) object;
+			timer.stop();
+			treeFeller(block);
+			player.sendMessage("Tree felled");
+			setCooldownTime();
+			state = ActiveState.COOLDOWN;
+			timer.restart();
+		}
+	}
+
+	private void treeFeller(Block block) {
+		markTree(block);
+		Skill skill = SkillHandler.getSkill(player, Skills.WOODCUTTING);
+		switch (tree.get(0).getData()) {
+		case 0:
+		case 1:
+		case 2:
+			if (tree.size() <= 10 + skill.level() / 25) {
+				for (Block log : tree) {
+					log.breakNaturally();
+					skill.addExp(20);
+				}
+			}
+			else {
+				player.sendMessage("Tree too big for Tree Feller!");
+			}
+			break;
+		case 3:
+			if (tree.size() <= 10 + skill.level() * 3 / 20) {
+				for (Block log : tree) {
+					log.breakNaturally();
+					skill.addExp(10);
+				}
+			}
+			else {
+				player.sendMessage("Tree too big for Tree Feller!");
+			}
+			break;
+		default:
+			break;			
+		}
+	}
+	
+	private void markTree(Block block) {
+		if (block.getType().equals(Material.LOG) && tree.contains(block) == false) {
+			tree.add(block);
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					for (int z = -1; z <= 1; z++) {
+						markTree(block.getRelative(x, y, z));
+					}
+				}
+			}
+		} 
+		else 
+		{
+			return;
+		}
+	}
+}

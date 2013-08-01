@@ -1,0 +1,63 @@
+package skills;
+
+import industry.Archaeology;
+import industry.Farming;
+import industry.Fishing;
+import industry.Mining;
+import industry.Woodcutting;
+
+import org.bukkit.entity.Player;
+
+import combat.Archery;
+import combat.Swords;
+import combat.Toughness;
+
+public enum Skills {
+	ARCHAEOLOGY, ARCHERY, FARMING, FISHING, MINING, SWORDS, TOUGHNESS, WOODCUTTING;
+	
+	public static Skill newSkill(String skill, Player player, int level, int exp) {
+		switch (skill.toLowerCase()) {
+		case "archaeology":
+			return new Archaeology(player, level, exp);
+		case "archery":
+			return new Archery(player, level, exp);
+		case "farming":
+			return new Farming(player, level, exp);
+		case "fishing":
+			return new Fishing(player, level, exp);
+		case "mining":
+			return new Mining(player, level, exp);
+		case "swords":
+			return new Swords(player, level, exp);
+		case "toughness":
+			return new Toughness(player, level, exp);
+		case "woodcutting":
+			return new Woodcutting(player, level, exp);
+		default:
+			return null;
+		}
+	}
+	
+	public static Skills getSkill(String skill) {
+		switch (skill.toLowerCase()) {
+		case "archaeology":
+			return ARCHAEOLOGY;
+		case "archery":
+			return ARCHERY;
+		case "farming":
+			return FARMING;
+		case "fishing":
+			return FISHING;
+		case "mining":
+			return MINING;
+		case "swords":
+			return SWORDS;
+		case "toughness":
+			return TOUGHNESS;
+		case "woodcutting":
+			return WOODCUTTING;
+		default:
+			return null;
+		}
+	}
+}

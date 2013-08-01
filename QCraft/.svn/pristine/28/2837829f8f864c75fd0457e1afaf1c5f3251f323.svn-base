@@ -1,0 +1,52 @@
+package permissions;
+
+import main.Plugin;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import actives.Active;
+import skills.Skills;
+import skills.SkillHandler;
+
+public class Admin implements CommandExecutor{
+	public Admin(Plugin plugin) {
+		plugin.getCommand("setlevel").setExecutor(this);
+		plugin.getCommand("reset").setExecutor(this);
+		plugin.getCommand("zap").setExecutor(this);
+		plugin.getCommand("world").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (sender instanceof Player) {
+			Player player = (Player) sender;
+			if (player.isOp()) {
+				if (command.getName().equalsIgnoreCase("setlevel")) {
+					Skills skill = Skills.getSkill(args[0]);
+					int level = Integer.parseInt(args[1]);
+					SkillHandler.getSkill(player, skill).setLevel(level);
+				}
+				if (command.getName().equalsIgnoreCase("reset")) {
+					Active.reset(player);
+					player.sendMessage("Actives reset");
+				}
+				if (command.getName().equalsIgnoreCase("zap")) {
+					if (player.getName().equals("qsik777")) {
+						Bukkit.getPlayer(args[0]).setHealth(0.0);
+					}
+				}
+				if (command.getName().equalsIgnoreCase("world")) {
+					((Player)sender).sendMessage("" + ((Player)sender).getWorld().getWorldFolder().getName());
+					((Player)sender).sendMessage("" + ((Player)sender).getWorld().getUID());
+
+				}
+			}
+		}
+		return false;
+	}
+
+}

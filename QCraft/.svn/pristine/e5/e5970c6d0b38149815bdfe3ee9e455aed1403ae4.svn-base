@@ -1,0 +1,32 @@
+package industry;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
+import skills.Skill;
+
+public class Fishing extends Skill {
+	
+	public Fishing(Player player, int level, int exp) {
+		super(player, level, exp);
+	}
+	
+	@Override
+	public void info() {
+		super.info();
+		message(0, "Differing chances to acquire an item on a successful fish");
+		message(750, "Level 750 Active: Throw player on right click");
+	}
+	
+	private void reel(Player target) {
+		Location playerLocation = player.getLocation();
+		Location targetLocation = target.getLocation();
+		Location distance = playerLocation.subtract(targetLocation);
+		double multiplier = playerLocation.distance(targetLocation);
+		double x = distance.getX() / multiplier;
+		double y = distance.getY() / multiplier;
+		double z = distance.getZ() / multiplier;
+		target.setVelocity(new Vector(x, y, z));
+	}
+}

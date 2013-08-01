@@ -1,0 +1,110 @@
+package factions;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map.Entry;
+import java.util.Set;
+import org.bukkit.entity.Player;
+
+public class Faction {
+	private String name;
+	private HashMap<Player, Status> members;
+	private LinkedList<Land> land;
+	private Home home;
+	
+	private enum Status {
+		MEMBER, MODERATOR, ADMIN;
+		
+		public static Status getStatus(int status) {
+			switch (status) {
+			case 0: 
+				return MEMBER;
+			case 1:
+				return MODERATOR;
+			case 2:
+				return ADMIN;
+			default:
+				return MEMBER;
+			}
+		}
+	}
+
+	public Faction(String name) {
+		this.name = name;
+	}
+	
+	public String name() {
+		return name;
+	}
+	
+	public boolean setName(String name) {
+		if (FactionHandler.getFactions().contains(name)) {
+			return false;
+		}
+		else {
+			this.name = name;
+			return true;
+		}
+	}
+	
+	public Player admin() {
+		Iterator<Entry<Player, Status>> iterator = members.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<Player, Status> member = iterator.next();
+			if (member.getValue().equals(Status.ADMIN)) {
+				return member.getKey();
+			}
+		}
+		return null;
+	}
+	
+	public boolean setAdmin(Player player) {
+		if (members.containsKey(player)) {
+			members.put(admin(), Status.MEMBER);
+			members.put(player, Status.ADMIN);
+		}
+		return false;
+	}
+	
+	public Set<Player> members() {
+		return members.keySet();
+	}
+	
+	public boolean addMember(Player player, int status) {
+		if (FactionHandler.getFaction(player).equals(this) ||
+				FactionHandler.getFaction(player) == null) {
+			members.put(player, Status.getStatus(status));
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeMember(Player player) {
+		if (members.containsKey(player)) {
+			members.remove(player);
+			return true;
+		}
+		return false;
+	}
+	
+	public LinkedList<Land> land() {
+		return land;
+	}
+	
+	public boolean addLand(Land land) {
+		if (this.land.contains(land)) {
+			this.land.add(land);
+			return true;
+		}
+		return false;
+	}
+	
+	public Home home() {
+		return home;
+	}
+	
+	public void setHome(Home home) {
+		this.home = home;
+	}
+}
