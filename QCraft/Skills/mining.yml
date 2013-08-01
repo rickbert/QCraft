@@ -14,5 +14,6 @@ blocks:
   emerald_ore:
   gold_ore:
   coal_ore:
-  obsidian: 30
+  obsidian:
+    exp: 30
   

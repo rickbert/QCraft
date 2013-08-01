@@ -8,18 +8,11 @@ import main.QCraft;
 
 import org.apache.commons.io.FileUtils;
 
-import skills.SkillParser;
 import skills.SkillType;
 
 public class ConfigLoader {
-	private final SkillParser skillParser;
 	
-	public ConfigLoader() {
-		loadConfig();
-		skillParser = new SkillParser();
-	}
-	
-	public void loadConfig() {
+	public static void load() {
 		File pluginFolder = QCraft.get().getDataFolder();
 		
 		File exchangeFolder = new File(pluginFolder, "Exchange");
@@ -55,5 +48,11 @@ public class ConfigLoader {
 				}
 			}
 		}
+	}
+	
+	public static void regenerate() {
+		File pluginFolder = QCraft.get().getDataFolder();
+		pluginFolder.delete();
+		load();		
 	}
 }

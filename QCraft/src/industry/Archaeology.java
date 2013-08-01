@@ -1,31 +1,28 @@
 package industry;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
+
+import main.QCraft;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import skills.Skill;
 
 public class Archaeology extends Skill {
-	private HashMap<Material, Integer> diggable = new HashMap<Material, Integer>();
+	private static HashMap<Material, Integer> diggable = new HashMap<Material, Integer>();
+	private static HashMap<Material, Drop> drops = new HashMap<Material, Drop>();
+	private static YamlConfiguration skillConfig;
 
-	public Archaeology(Player player, int level, int exp) {
-		super(player, level, exp);
-		
-		int defaultExp = skillConfig.getConfigurationSection("exp").getInt("default");
-		for (String block : skillConfig.getConfigurationSection("blocks").getKeys(false)) {
-			String expPath = "blocks." + block;
-			int blockExp = skillConfig.getConfigurationSection(expPath).getInt("exp");
-			Material material = Material.getMaterial(block);
-			if (skillConfig.getConfigurationSection(path))
-			
-		}
+	public Archaeology(UUID id, int level, int exp) {
+		super(id, level, exp);	
+		loadConfig();
 	}
 
 	@Override
@@ -39,7 +36,7 @@ public class Archaeology extends Skill {
 		message(750, "Level 750 Passive: Chance of discovery in Gravel");
 	}
 
-	public void active(Block block) {
+	public void beginDigging(Block block) {
 		int activeDuration = 5 + 5 * level / 1000;
 		switch (active.getState()) {
 		case PRIMED:
@@ -52,76 +49,65 @@ public class Archaeology extends Skill {
 			break;
 		}
 	}
-	
-	public void blockBreak(Block block) {
+
+	public void endDigging(Block block) {
 		addExp(getExp(block));
-		ItemStack drop = getDrop(block);
-		if (drop != null) {
-			World world = block.getWorld();
-			Location location = block.getLocation();
-			world.dropItemNaturally(location, drop);	
+		
+		Material type = block.getType();
+		if (drops.containsKey(type)) {
+			double roll = new Random().nextDouble();
+			Drop drop = drops.get(type);
+			if (drop.success(level, roll)) {
+				World world = block.getWorld();
+				Location location = block.getLocation();
+				world.dropItemNaturally(location, drop.getItem());
+				if (drop.getExp() > 0) {
+					addExp(drop.getExp());
+				}
+
+			}
 		}
 	}
 
 	public static boolean isDiggable(Block block) {
-		switch (block.getType()) {
-		case GRASS:
-		case SAND:
-		case GRAVEL:
-		case SOUL_SAND:
-		case DIRT:
-			return true;
-		default:
-			return false;
-		}
+		return diggable.containsKey(block.getType());
 	}
 
 	private int getExp(Block block) {
-		switch (block.getType()) {
-		case SAND:
-		case GRAVEL:
-		case GRASS:
-		case DIRT:
-		case SOUL_SAND:
-			return 10;
-		default:
-			return 0;
+		return diggable.containsKey(block.getType())? diggable.get(block.getType()) : 0;
+	}
+
+	@Override
+	protected void loadConfig() {
+		if (skillConfig == null) {
+			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/archaeology.yml");
+			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
+			ConfigurationSection blocks = skillConfig.getConfigurationSection("blocks");
+			for (String block : blocks.getKeys(false)) {
+				try {
+					int exp = Math.max(skillConfig.getInt("exp.default"), blocks.getInt(block + ".exp"));
+					diggable.put(Material.getMaterial(block), exp);
+				}
+				finally {}
+
+				try {
+					ConfigurationSection dropSection = blocks.getConfigurationSection(block);
+					for (String drop : dropSection.getKeys(false)) {
+						int dropExp = Math.max(skillConfig.getInt("exp.drops"), dropSection.getInt("exp"));
+						Material material = Material.getMaterial(drop);
+						int level = Math.max(0, dropSection.getInt("level"));
+						double chance = Math.max(0, dropSection.getDouble("chance"));
+						drops.put(material, new Drop(material, level, chance, dropExp));
+					}
+				}
+				finally {}
+			}
 		}
 	}
-	
-	private ItemStack getDrop(Block block) {
-		double chance = new Random().nextDouble();
-		switch (block.getType()) {
-		case DIRT:
-			if (level >= 1) {
-				if (chance <= 0.025) {
-					return new ItemStack(Material.GLOWSTONE_DUST);
-				}
-			}
-			break;
-		case SAND:
-			if (level >= 250) {
-				if (chance <= 0.025) {
-					return new ItemStack(Material.SULPHUR);
-				}
-			}
-		case SOUL_SAND:
-			if (level >= 500) {
-				if (chance <= 0.05) {
-					return new ItemStack(Material.NETHER_WARTS);
-				}
-			}
-			break;
-		case GRAVEL:
-			if (level >= 750) {
-				if (chance <= 0.01) {
-					return new ItemStack(Material.DIAMOND);
-				}				
-			}
-			break;
-		default:
-			break;
-		}
-		return null;
+
+	@Override
+	protected void save() {
+		// TODO Auto-generated method stub
+
 	}
 }
