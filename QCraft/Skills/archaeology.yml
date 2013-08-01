@@ -1,0 +1,20 @@
+active:
+  name: "Super Shovel"
+  length:
+  cooldown:
+blocks:
+  soul_sand:
+  dirt:
+  grass:
+  sand:
+  gravel:
+exp:
+  default: 10
+passive:
+  passive1:
+    level: 250   
+  passive2:
+    level: 500
+  passive3:
+    level: 750
+  

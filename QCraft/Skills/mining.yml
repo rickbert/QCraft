@@ -1,0 +1,27 @@
+name: "Mining"
+active:
+  name: "Drill"
+  length:
+  cooldown:
+blocks:
+  default: 10
+  stone:
+  netherrack:
+  endstone:
+  iron_ore:
+  redstone_ore:
+  lapis_ore:
+  diamond_ore:
+  emerald_ore:
+  gold_ore:
+  coal_ore:
+  obsidian:
+    exp: 30
+passive:
+  passive1:
+    level: 250   
+  passive2:
+    level: 500
+  passive3:
+    level: 750
+  

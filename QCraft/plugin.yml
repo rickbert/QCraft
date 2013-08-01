@@ -1,0 +1,12 @@
+name: QCraft
+main: main.QCraft
+description: QCraft Server Plugin
+version: 1.0
+author: qsik
+
+commands:
+  qconomy:
+  qfactions:
+  qskills:
+  zap:
+  tnt:
