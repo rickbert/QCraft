@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import qplayer.Money;
-import sql.FactionData;
 import custom.Chat;
+import database.FactionData;
 import main.QCraft;
 
 public class FactionCommands implements CommandExecutor {

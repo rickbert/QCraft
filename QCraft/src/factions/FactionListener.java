@@ -25,8 +25,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import database.FactionData;
 import qplayer.Power;
-import sql.FactionData;
 
 public class FactionListener implements Listener {
 	private final FactionData factionData;
