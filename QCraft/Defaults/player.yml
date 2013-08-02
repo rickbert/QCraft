@@ -1,0 +1,55 @@
+money:
+  balance: 0
+faction:
+  name:
+  status:
+  power:
+skills:
+  archaeology:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  archery:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  farming:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  fishing:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  mining:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  swords:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  toughness:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0
+  woodcutting:
+    level: 1
+    exp: 0
+    active:
+      state: ready
+      duration: 0  

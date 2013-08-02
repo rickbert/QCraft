@@ -1,6 +1,7 @@
 package industry;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,8 +17,8 @@ import skills.Skill;
 
 public class Farming extends Skill {
 
-	public Farming(Player player, int level, int exp) {
-		super(player, level, exp);
+	public Farming(UUID id) {
+		super(id);
 	}
 
 	@Override
@@ -220,5 +221,11 @@ public class Farming extends Skill {
 			return 1 + checkBlocks(block.getRelative(0, 1, 0), material);
 		}
 		return 0;
+	}
+
+	@Override
+	protected void loadSkillInfo() {
+		// TODO Auto-generated method stub
+		
 	}
 }

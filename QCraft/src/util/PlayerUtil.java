@@ -1,7 +1,10 @@
 package util;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
+
+import main.QCraft;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,10 +17,19 @@ public class PlayerUtil {
 	
 	public static void loadPlayer(Player player) {
 		players.put(player.getUniqueId(), player);
-		qplayers.put(player.getUniqueId(), new QPlayer(player));
+		try {
+			qplayers.put(player.getUniqueId(), new QPlayer(player));
+		} catch (IOException e) {
+			QCraft.get().log(e.toString());
+		}
 	}
 	
 	public static void savePlayer(Player player) {
+		try {
+			qplayers.get(player.getUniqueId()).save();
+		} catch (IOException e) {
+			QCraft.get().log(e.toString());
+		}
 		players.remove(player.getUniqueId());
 		qplayers.remove(player.getUniqueId());
 	}
@@ -41,9 +53,13 @@ public class PlayerUtil {
 	}
 	
 	public static void reload() {
-		players.clear();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			players.put(player.getUniqueId(), player);
+			savePlayer(player);
+		}
+		players.clear();
+		qplayers.clear();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			loadPlayer(player);
 		}
 	}
 }

@@ -30,7 +30,7 @@ public class Toughness extends Skill {
 	private static YamlConfiguration skillConfig;
 
 	public Toughness(UUID id, int level, int exp) {
-		super(id, level, exp);
+		super(id);
 	}
 	
 	@Override
@@ -92,7 +92,7 @@ public class Toughness extends Skill {
 	}
 
 	@Override
-	protected void loadConfig() {
+	protected void loadSkillInfo() {
 		if (skillConfig == null) {
 			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/toughness.yml");
 			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
@@ -112,11 +112,5 @@ public class Toughness extends Skill {
 				break;
 			}
 		}
-	}
-
-	@Override
-	protected void save() {
-		// TODO Auto-generated method stub
-		
 	}
 }

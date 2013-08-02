@@ -24,9 +24,10 @@ public class Mining extends Skill {
 	private static HashMap<Material, Integer> bonus = new HashMap<Material, Integer>();
 	private static YamlConfiguration skillConfig;
 
-	public Mining(UUID id, int level, int exp) {
-		super(id, level, exp);
+	public Mining(UUID id) {
+		super(id);
 	}
+	
 	@Override
 	public void info() {
 		super.info();
@@ -82,41 +83,35 @@ public class Mining extends Skill {
 	}
 
 	@Override
-	protected void loadConfig() {
-		if (skillConfig == null) {
-			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/mining.yml");
-			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
-			ConfigurationSection blocks = skillConfig.getConfigurationSection("blocks");
-			for (String block : blocks.getKeys(false)) {
-				try {
-					int exp = Math.max(skillConfig.getInt("exp.default"), blocks.getInt(block + ".exp"));
-					minable.put(Material.getMaterial(block), exp);
-				}
-				finally {}
-				
-				try {
-					Material material = Material.getMaterial(block);
-					int bonusExp = blocks.getInt(block + ".bonus");
-					bonus.put(material, bonusExp);					
-				}
-				finally {}
-
-				try {
-					ConfigurationSection dropSection = blocks.getConfigurationSection(block + ".drop");
-					Material material = Material.getMaterial(dropSection.getString("item"));
-					int level = dropSection.getInt("level");
-					double chance = dropSection.getDouble("chance");				
-					int dropExp = Math.max(skillConfig.getInt("exp.drops"), dropSection.getInt("exp"));
-					drops.put(material, new Drop(material, level, chance, dropExp));
-				}
-				finally {}
-			}
-		}		
-	}
-	
-	@Override
-	protected void save() {
-		// TODO Auto-generated method stub
-		
+	protected void loadSkillInfo() {
+//		if (skillConfig == null) {
+//			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/mining.yml");
+//			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
+//			ConfigurationSection blocks = skillConfig.getConfigurationSection("blocks");
+//			for (String block : blocks.getKeys(false)) {
+//				try {
+//					int exp = Math.max(skillConfig.getInt("exp.default"), blocks.getInt(block + ".exp"));
+//					minable.put(Material.getMaterial(block), exp);
+//				}
+//				finally {}
+//				
+//				try {
+//					Material material = Material.getMaterial(block);
+//					int bonusExp = blocks.getInt(block + ".bonus");
+//					bonus.put(material, bonusExp);					
+//				}
+//				finally {}
+//
+//				try {
+//					ConfigurationSection dropSection = blocks.getConfigurationSection(block + ".drop");
+//					Material material = Material.getMaterial(dropSection.getString("item"));
+//					int level = dropSection.getInt("level");
+//					double chance = dropSection.getDouble("chance");				
+//					int dropExp = Math.max(skillConfig.getInt("exp.drops"), dropSection.getInt("exp"));
+//					drops.put(material, new Drop(material, level, chance, dropExp));
+//				}
+//				finally {}
+//			}
+//		}		
 	}
 }

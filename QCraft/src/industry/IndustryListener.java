@@ -75,7 +75,7 @@ public class IndustryListener implements Listener {
 	@EventHandler (ignoreCancelled = true)
 	private void refreshIndustryBuff(PlayerAnimationEvent event) {
 		Player player = event.getPlayer();
-		QPlayer qplayer = QCraft.getQPlayer(player);
+		QPlayer qplayer = PlayerUtil.getQPlayer(player);
 		Block block = player.getTargetBlock(null, 5);
 		Tool tool = Tool.getTool(player.getItemInHand());
 		switch (tool) {

@@ -1,5 +1,7 @@
 package skills;
 
+import java.util.UUID;
+
 import combat.Archery;
 import combat.Swords;
 import combat.Toughness;
@@ -17,8 +19,7 @@ public enum SkillType {
 	MINING (Mining.class),
 	SWORDS (Swords.class),
 	TOUGHNESS (Toughness.class),
-	WOODCUTTING (Woodcutting.class),
-	SKILL (Skill.class);
+	WOODCUTTING (Woodcutting.class);
 	
 	private final Class<?> skillClass;
 	
@@ -26,8 +27,8 @@ public enum SkillType {
 		this.skillClass = skillClass;
 	}
 	
-	public Class<?> getClass(SkillType skillType) {
-		return skillClass;
+	public Skill instance(UUID id) throws Exception {
+		return (Skill) skillClass.getDeclaredConstructor(UUID.class).newInstance(id);
 	}
 	
 	public static SkillType getSkillType(String skill) {
@@ -37,6 +38,6 @@ public enum SkillType {
 				return skillType;
 			}
 		}
-		return SkillType.SKILL;
+		return null;
 	}
 }

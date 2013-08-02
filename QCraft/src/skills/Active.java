@@ -125,6 +125,9 @@ public class Active implements ActionListener {
 	}
 
 	public long getTime() {
+		if (activeState.equals(ActiveState.READY)) {
+			return 0;
+		}
 		return Math.round((timer.getInitialDelay() / 1000) - clock.getTime(Time.SECONDS));
 	}
 

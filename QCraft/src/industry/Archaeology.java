@@ -22,8 +22,8 @@ public class Archaeology extends Skill {
 	private static HashMap<Material, Drop> drops = new HashMap<Material, Drop>();
 	private static YamlConfiguration skillConfig;
 
-	public Archaeology(UUID id, int level, int exp) {
-		super(id, level, exp);	
+	public Archaeology(UUID id) {
+		super(id);	
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class Archaeology extends Skill {
 	}
 
 	@Override
-	protected void loadConfig() {
+	protected void loadSkillInfo() {
 		if (skillConfig == null) {
 			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/archaeology.yml");
 			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
@@ -102,11 +102,5 @@ public class Archaeology extends Skill {
 				finally {}
 			}
 		}
-	}
-
-	@Override
-	protected void save() {
-		// TODO Auto-generated method stub
-
 	}
 }

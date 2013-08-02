@@ -30,8 +30,8 @@ public class Archery extends Skill {
 	private static double playerMultiplier = 5;
 	private static YamlConfiguration skillConfig;
 
-	public Archery(UUID id, int level, int exp) {
-		super(id, level, exp);
+	public Archery(UUID id) {
+		super(id);
 		active = null;
 	}
 
@@ -94,7 +94,7 @@ public class Archery extends Skill {
 	}
 
 	@Override
-	public void loadConfig() {
+	public void loadSkillInfo() {
 		if (skillConfig == null) {
 			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/archery.yml");
 			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
@@ -114,11 +114,5 @@ public class Archery extends Skill {
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void save() {
-		// TODO Auto-generated method stub
-
 	}
 }

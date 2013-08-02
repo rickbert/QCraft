@@ -1,16 +1,19 @@
 package industry;
 
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import skills.Skill;
 import skills.Active.ActiveState;
+import util.PlayerUtil;
 
 public class Fishing extends Skill {
 
-	public Fishing(Player player, int level, int exp) {
-		super(player, level, exp);
+	public Fishing(UUID id) {
+		super(id);
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class Fishing extends Skill {
 
 	public void active(Player caught) {
 		if (active.getState().equals(ActiveState.PRIMED)) {
-			Location playerLocation = player.get().getLocation();
+			Location playerLocation = PlayerUtil.getPlayer(id).getLocation();
 			Location targetLocation = caught.getLocation();
 			Location distance = playerLocation.subtract(targetLocation);
 			double multiplier = playerLocation.distance(targetLocation);
@@ -32,5 +35,11 @@ public class Fishing extends Skill {
 			caught.setVelocity(new Vector(x, y, z));
 			active.activate(0, 15);
 		}
+	}
+
+	@Override
+	protected void loadSkillInfo() {
+		// TODO Auto-generated method stub
+		
 	}
 }

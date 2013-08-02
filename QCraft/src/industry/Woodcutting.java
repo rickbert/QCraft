@@ -2,6 +2,7 @@ package industry;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,8 +19,8 @@ public class Woodcutting extends Skill {
 		OAK, BIRCH, SPRUCE, JUNGLE;
 	}
 
-	public Woodcutting(Player player, int level, int exp) {
-		super(player, level, exp);
+	public Woodcutting(UUID id) {
+		super(id);
 	}
 
 	@Override
@@ -166,5 +167,11 @@ public class Woodcutting extends Skill {
 			break;
 		}
 		return null;
+	}
+
+	@Override
+	protected void loadSkillInfo() {
+		// TODO Auto-generated method stub
+		
 	}
 }

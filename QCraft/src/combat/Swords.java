@@ -28,11 +28,11 @@ public class Swords extends Skill {
 	private static double spawnerMultiplier = 1;
 	private static double playerMultiplier = 5;
 	private static YamlConfiguration skillConfig;
-	
-	public Swords(UUID id, int level, int exp) {
-		super(id, level, exp);
+
+	public Swords(UUID id) {
+		super(id);
 	}
-	
+
 	@Override
 	public void info() {
 		super.info();	
@@ -44,76 +44,66 @@ public class Swords extends Skill {
 
 	public void combat(EntityDamageByEntityEvent event) {
 		Player damager = (Player) event.getDamager();
-		if (damager.getItemInHand().getType().name().contains("_SWORD")) {
-			LivingEntity target = (LivingEntity) event.getEntity();
-			double damage = event.getDamage();
-			double expGain = event.getDamage();
-			if (active.getState().equals(ActiveState.PRIMED)) {
-				int cooldownDuration = 425 - level / 4;
-				active.activate(0, cooldownDuration);
-				damager.sendMessage("DEMACIA!");
-				Damageable entity = (Damageable) event.getEntity();
-				double missingHealth = entity.getMaxHealth() - entity.getHealth();
-				damage = Math.round((damage * level / 2000.0) + (damage * 0.05 * missingHealth));
-			}
-			else {
-				damage = damage * (1 + level / 2000.0);
-				if (level >= 250) {
-					if (criticalHit(damager)) {
-						damage = damage * 1.5;
-						damager.sendMessage("Critical Strike!");
-						if (level >= 750 && target instanceof Player) {
-							PlayerUtil.getQPlayer(damager).applyBleed(damager, (Player) target);
-						}
-					}
-				}				
-			}
-			event.setDamage(damage);
-			
-			double multiplier = defaultMultiplier;
-			if (target.getCustomName().equals("spawner")) {
-				multiplier = spawnerMultiplier;
-			}
-			else if (target instanceof Player) {
-				multiplier = playerMultiplier;
-			}
-			expGain = Math.round(expGain * multiplier);
-			addExp((int) expGain);
+		LivingEntity target = (LivingEntity) event.getEntity();
+		double damage = event.getDamage();
+		double expGain = event.getDamage();
+		damage = damage * (1 + level / 2000.0);
+		if (active.getState().equals(ActiveState.PRIMED)) {
+			int cooldownDuration = 425 - level / 4;
+			active.activate(0, cooldownDuration);
+			damager.sendMessage("DEMACIA!");
+			Damageable entity = (Damageable) event.getEntity();
+			double missingHealth = entity.getMaxHealth() - entity.getHealth();
+			damage = Math.round((damage * level / 2000.0) + (damage * 0.05 * missingHealth));
 		}
+		if (level >= 250) {
+			if (criticalHit()) {
+				damage = damage * 1.5;
+				damager.sendMessage("Critical Strike!");
+				if (level >= 750 && target instanceof Player) {
+					PlayerUtil.getQPlayer(damager).applyBleed(damager, (Player) target);
+				}
+			}			
+		}
+		event.setDamage(damage);
+
+		double multiplier = defaultMultiplier;
+		if (target.getCustomName() != null && target.getCustomName().equals("spawner")) {
+			multiplier = spawnerMultiplier;
+		}
+		else if (target instanceof Player) {
+			multiplier = playerMultiplier;
+		}
+		expGain = Math.round(expGain * multiplier);
+		addExp((int) expGain);
 	}
 
-	private boolean criticalHit(Player player) {
-		double chance = level * 0.3 / 1000.0;
+	private boolean criticalHit() {
+		double chance = level / 1000.0 * 0.3;
 		double proc = new Random().nextDouble();
 		return proc <= chance;
 	}
-	
+
 	@Override
-	public void loadConfig() {
+	public void loadSkillInfo() {
 		if (skillConfig == null) {
 			File skillFile = new File(QCraft.get().getDataFolder(), "Skills/swords.yml");
 			skillConfig = YamlConfiguration.loadConfiguration(skillFile);
-		}
-		ConfigurationSection multipliers = skillConfig.getConfigurationSection("multipliers");
-		for (String key : multipliers.getKeys(false)) {
-			double multiplier = multipliers.getDouble(key);
-			switch (key) {
-			case "spawner":
-				spawnerMultiplier = multiplier;
-				break;
-			case "player":
-				playerMultiplier = multiplier;
-			case "default":
-				defaultMultiplier = multiplier;
-			default:
-				break;
+			ConfigurationSection multipliers = skillConfig.getConfigurationSection("multipliers");
+			for (String key : multipliers.getKeys(false)) {
+				double multiplier = multipliers.getDouble(key);
+				switch (key) {
+				case "spawner":
+					spawnerMultiplier = multiplier;
+					break;
+				case "player":
+					playerMultiplier = multiplier;
+				case "default":
+					defaultMultiplier = multiplier;
+				default:
+					break;
+				}
 			}
 		}
-	}
-
-	@Override
-	protected void save() {
-		// TODO Auto-generated method stub
-		
 	}
 }

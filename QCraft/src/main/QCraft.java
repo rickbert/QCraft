@@ -1,7 +1,8 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
+import industry.IndustryListener;
+
+import java.io.IOException;
 import java.util.logging.Level;
 
 import org.bukkit.command.Command;
@@ -14,23 +15,22 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import qplayer.PlayerParser;
-import qplayer.QPlayer;
-import skills.SkillsCommands;
+import combat.CombatListener;
+import skills.SkillCommands;
 import util.ConfigLoader;
+import util.PlayerUtil;
 
 public class QCraft extends JavaPlugin implements Listener {
 	private static QCraft instance;
-	private static HashMap<Player, QPlayer> players;
-	private ConfigLoader configLoader;
 	
 	//Create our database data fetching class
 	@Override
 	public void onEnable() {
 		instance = this;
-		players = new HashMap<Player, QPlayer>();
 		this.getServer().getPluginManager().registerEvents(this, this);
-		configLoader = new ConfigLoader();
+		ConfigLoader.load();
+		new CombatListener(this);
+		new IndustryListener(this);
 	}
 
 	//Clean up and update our data
@@ -46,7 +46,10 @@ public class QCraft extends JavaPlugin implements Listener {
 		switch (command.getName().toLowerCase()) {
 		case "qskills":
 			if (sender instanceof Player) {
-				SkillsCommands.processCommand(args, (Player) sender);
+				try {
+					SkillCommands.processCommand(args, (Player) sender);
+				}
+				catch (Exception e) {}
 			}
 		}
 		
@@ -57,24 +60,13 @@ public class QCraft extends JavaPlugin implements Listener {
 		this.getLogger().log(Level.INFO, message);
 	}
 	
-	public static void cleanupPlayer(QPlayer player) {
-		for (Entry<Player, QPlayer> entry : players.entrySet()) {
-			if (entry.getValue().equals(player)) {
-				players.remove(entry.getKey());
-			}
-		}
-	}
-	
 	@EventHandler (priority = EventPriority.LOWEST)
 	private void loadPlayer(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		players.put(player, PlayerParser.loadPlayer(player));
+		PlayerUtil.loadPlayer(event.getPlayer());
 	}
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	private void savePlayer(PlayerQuitEvent event) {
-		Player player = event.getPlayer();
-		players.get(player);
-		players.remove(player);
+		PlayerUtil.savePlayer(event.getPlayer());
 	}
 }

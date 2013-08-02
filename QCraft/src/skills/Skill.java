@@ -1,8 +1,13 @@
 package skills;
 
+import java.io.File;
 import java.util.UUID;
 
+import main.QCraft;
+
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import util.PlayerUtil;
 
 public abstract class Skill {
@@ -13,13 +18,12 @@ public abstract class Skill {
 	protected int exp;
 	protected int expNext;
 
-	public Skill(UUID id, int level, int exp) {
+	public Skill(UUID id) {
 		this.id = id;
 		active = new Active(SkillType.getSkillType(skillName), id);
-		this.level = level;
-		this.exp = exp;
+		loadSkillInfo();
+		loadPlayerInfo();
 		this.expNext = (int) (Math.pow(1.005, this.level) * 100);
-		loadConfig();
 	}
 
 	public String getName() {
@@ -107,6 +111,29 @@ public abstract class Skill {
 		}
 	}
 
-	protected abstract void loadConfig();
-	protected abstract void save();
+	protected abstract void loadSkillInfo();
+	
+	protected void loadPlayerInfo() {
+		String playerName = PlayerUtil.getPlayer(id).getName();
+		File playerFile = new File(QCraft.get().getDataFolder(), "Players/" + playerName + ".yml");
+		YamlConfiguration playerConfig = YamlConfiguration.loadConfiguration(playerFile);
+		String path = "skills." + skillName.toLowerCase();
+		level = Math.max(1, playerConfig.getInt(path + ".level"));
+		exp = Math.max(1, playerConfig.getInt(path + ".exp"));
+	}
+	
+	public void save(YamlConfiguration playerConfig) {
+		String path = "skills." + skillName.toLowerCase();
+		playerConfig.set(path + ".level", level);	
+		playerConfig.set(path + ".exp", exp);
+		path = path + ".active";
+		try {
+			playerConfig.set(path + ".state", active.getState().toString().toLowerCase());
+			playerConfig.set(path + ".duration", active.getTime());
+		}
+		catch (Exception e) {
+			playerConfig.set(path + ".state", "ready");
+			playerConfig.set(path + ".duration", 0);
+		}
+	}
 }

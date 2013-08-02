@@ -2,18 +2,23 @@ package qplayer;
 
 import factions.Faction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
 import main.QCraft;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
 import custom.Tool;
 import skills.Skill;
 import skills.SkillType;
+import util.PlayerUtil;
 
 /*
  * Our wrapper class which stores all our custom data associated with players
@@ -29,12 +34,25 @@ public class QPlayer {
 	private final IndustryBuff industryBuff;
 	private final Resistance resistance;
 	private final PermissionAttachment permissions;
+	private final YamlConfiguration playerConfig;
 
-	public QPlayer(Player player) {
+	public QPlayer(Player player) throws IOException {
 		this.id = player.getUniqueId();
 		permissions = player.addAttachment(QCraft.get());
 		industryBuff = new IndustryBuff(id);
 		resistance = new Resistance(id);
+		File playerFile = new File(QCraft.get().getDataFolder(), "Players/" + player.getName() + ".yml");
+		if (!playerFile.exists()) {
+			FileUtils.copyInputStreamToFile(QCraft.get().getResource("Defaults/player.yml"), playerFile);
+		}
+		playerConfig = YamlConfiguration.loadConfiguration(playerFile);
+		for (SkillType skill : SkillType.values()) {
+			try {
+				setSkill(skill);
+			} catch (Exception e) {
+				QCraft.get().log(e.toString());
+			}
+		}
 	}
 	
 	public void setMoney(int amount) {
@@ -69,7 +87,13 @@ public class QPlayer {
 		return power.getPower();
 	}
 	
-	public void setSkill(SkillType skill, int level, int exp) {
+	public void setSkill(SkillType skill) {
+		try {
+			skills.put(skill, skill.instance(id));
+		}
+		catch (Exception e) {
+			QCraft.get().log("Unable to initialize " + skill.name().toLowerCase() + " for " + PlayerUtil.getPlayer(id).getName());
+		}
 	}
 	
 	public void setSkills(HashMap<SkillType, Skill> skills) {
@@ -112,7 +136,12 @@ public class QPlayer {
 		permissions.unsetPermission(permission);
 	}
 	
-	public void save() {
-		
+	public void save() throws IOException {
+		String username = PlayerUtil.getPlayer(id).getName();
+		File playerFile = new File(QCraft.get().getDataFolder(), "Players/" + username + ".yml");
+		for (Skill skill : skills.values()) {
+			skill.save(playerConfig);
+		}
+		playerConfig.save(playerFile);
 	}
 }
