@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="QCraft:jar">
+    <output-path>$USER_HOME$/Desktop/Bukkit/plugins</output-path>
+    <root id="archive" name="QCraft.jar">
+      <element id="module-output" name="QCraft" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/Bukkit/bukkit.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/Apache Commons/commons-io-2.4/commons-io-2.4.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/QCraft/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/QCraft/config.yml" />
+    </root>
+  </artifact>
+</component>
