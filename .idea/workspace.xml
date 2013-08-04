@@ -1,42 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="QCraft:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="2de0e7fb-dc3f-4410-a947-4e7c2113f610" name="Default" comment="" />
+    <list default="true" id="e8cd2153-5254-4696-8a4d-84fbfda73476" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="QCraft.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570473986" ignored="false" />
-    <file path="/a.groovy" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375415297588" ignored="false" />
-    <file path="/a.html" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375415298316" ignored="false" />
-    <file path="/Clock.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375485068880" ignored="false" />
-    <file path="/Faction.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375485494390" ignored="false" />
-    <file path="/Woodcutting.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499505073" ignored="false" />
-    <file path="/Resistance.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375485706258" ignored="false" />
-    <file path="/QPlayer.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375485728294" ignored="false" />
-    <file path="/IndustryBuff.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375500850815" ignored="false" />
-    <file path="/Skill.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499518429" ignored="false" />
-    <file path="/SkillsData.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375493957998" ignored="false" />
-    <file path="/Item.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375494126584" ignored="false" />
-    <file path="/Farming.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499447818" ignored="false" />
-    <file path="/IndustryListener.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499818463" ignored="false" />
-    <file path="/FactionCommands.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375497306193" ignored="false" />
-    <file path="/Archaeology.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375500573003" ignored="false" />
-    <file path="/Fishing.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499806920" ignored="false" />
-    <file path="/Mining.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375499637506" ignored="false" />
-    <file path="/Archery.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375502938847" ignored="false" />
-    <file path="/Swords.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375500416985" ignored="false" />
-    <file path="/Toughness.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375500439067" ignored="false" />
-    <file path="/archery.yml" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375502438448" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/skills/SkillType.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570541918" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/industry/IndustryListener.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570542794" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/industry/Mining.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570541919" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/skills/Active.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570541919" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/industry/Fishing.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570541919" ignored="false" />
-    <file path="$PROJECT_DIR$/../QSkills/src/skills/Skill.java" changelist="2de0e7fb-dc3f-4410-a947-4e7c2113f610" time="1375570541919" ignored="false" />
+    <file path="/Dummy.txt" changelist="e8cd2153-5254-4696-8a4d-84fbfda73476" time="1375578581260" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +23,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -88,16 +59,13 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="QCraft" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -112,33 +80,13 @@
       <MyDateState />
     </option>
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="changedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/QCraft/src/factions/Faction.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/qplayer/QPlayer.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/skills/Skill.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/IndustryListener.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/Fishing.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/combat/Swords.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/combat/Toughness.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/qplayer/Resistance.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/Archaeology.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/Farming.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/Mining.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/industry/Woodcutting.java" />
-        <option value="$PROJECT_DIR$/QCraft/src/qplayer/IndustryBuff.java" />
-        <option value="$USER_HOME$/Desktop/Bukkit/spigot.yml" />
-        <option value="$PROJECT_DIR$/QCraft/Skills/archery.yml" />
-        <option value="$PROJECT_DIR$/QCraft/src/combat/Archery.java" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="960" />
-    <option name="height" value="1032" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -149,7 +97,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -172,35 +120,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QCraft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QCraft" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="options.lastSelected" value="project.propCompiler" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/QCraft/config.yml" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Apache Commons/commons-io-2.4/commons-io-2.4.jar!/" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="qcraft" />
-    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -215,6 +166,19 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -242,19 +206,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -298,53 +249,16 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2de0e7fb-dc3f-4410-a947-4e7c2113f610" name="Default" comment="" />
-      <created>1375415161166</created>
-      <updated>1375415161166</updated>
+      <changelist id="e8cd2153-5254-4696-8a4d-84fbfda73476" name="Default" comment="" />
+      <created>1375578503663</created>
+      <updated>1375578503663</updated>
     </task>
     <servers />
   </component>
-  <component name="TodoView" selected-index="0">
-    <todo-panel id="selected-file">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="default-changelist">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="960" height="1032" extended-state="0" />
+    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -355,19 +269,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.60067874" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5223214" sideWeight="0.6696833" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33031675" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39819005" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -430,28 +342,15 @@
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
-  <component name="antWorkspaceConfiguration">
-    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Desktop/Bukkit/spigot.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="31" selection-start="815" selection-end="815" vertical-scroll-proportion="0.019813519" />
-      </provider>
-    </entry>
-  </component>
   <component name="masterDetails">
     <states>
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>QCraft:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -499,7 +398,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -518,17 +416,6 @@
         </settings>
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ScopeChooserConfigurable.UI">
         <settings>
           <splitter-proportions>
             <option name="proportions">

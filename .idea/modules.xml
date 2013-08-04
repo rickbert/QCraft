@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/QCraft/QCraft.iml" filepath="$PROJECT_DIR$/QCraft/QCraft.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QCraft.iml" filepath="$PROJECT_DIR$/QCraft.iml" />
     </modules>
   </component>
 </project>
